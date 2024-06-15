@@ -9,7 +9,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative flex h-screen">
       <SidebarLayout />
-      <main className="container relative mx-auto max-w-7xl px-6 flex-grow pt-16 overflow-auto">
+      <main className="container relative mx-auto max-w-7xl px-16 flex-grow pt-16 overflow-auto">
         {modal && <GenericModal>{useMainStore.getState().modal} </GenericModal>}
         {children}
       </main>

@@ -5,6 +5,7 @@ import { CiSettings } from "react-icons/ci";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaBars } from "react-icons/fa";
 import "./sidebar.module.scss";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { PiDogBold } from "react-icons/pi";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -58,6 +59,8 @@ const SidebarLayout = () => {
         </header>
         <Menu>
           <MenuItem icon={<AiOutlineDashboard />}>Dashboard</MenuItem>
+          <MenuItem icon={<PiDogBold />}>Pets</MenuItem>
+
           {/* <SubMenu title="Components">
             <MenuItem>Component 1</MenuItem>
             <MenuItem>Component 2</MenuItem>

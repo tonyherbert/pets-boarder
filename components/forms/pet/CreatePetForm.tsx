@@ -3,7 +3,7 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreatePetForm.module.scss";
 import { createPet } from "@/services/pet/pet_service";
-import { getCurrentUserUid } from "@/services/user/user_service";
+import { getCurrentUserId } from "@/services/user/user_service";
 import { useMainStore } from "@/stores/main-store";
 
 type FormValues = {
@@ -14,8 +14,6 @@ type FormValues = {
   name: string;
   birthDate: string;
   gender: string;
-  color: string;
-  photoUrl: string;
 };
 
 const CreatePetForm: React.FC = () => {
@@ -27,13 +25,23 @@ const CreatePetForm: React.FC = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const userId = getCurrentUserUid();
+    const userId = getCurrentUserId();
     createPet(userId!, data);
     closeModal();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+        <label htmlFor="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          {...register("name", { required: true })}
+        />
+        {errors.name && <span>This field is required</span>}
+      </div>
+
       <div className={`${styles.formGroup} ${styles.fullWidth}`}>
         <label htmlFor="chipNumber">Chip Number</label>
         <input
@@ -69,16 +77,6 @@ const CreatePetForm: React.FC = () => {
         {errors.breed && <span>This field is required</span>}
       </div>
 
-      <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          {...register("name", { required: true })}
-        />
-        {errors.name && <span>This field is required</span>}
-      </div>
-
       <div className={styles.formGroup}>
         <label htmlFor="birthDate">Birth Date</label>
         <input
@@ -90,12 +88,23 @@ const CreatePetForm: React.FC = () => {
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="gender">Gender</label>
-        <select id="gender" {...register("gender", { required: true })}>
-          <option value="">Select...</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
+        <label htmlFor="birthDate">Gender</label>
+        <div className={styles.radioGroup}>
+          <input
+            {...register("gender", { required: true })}
+            type="radio"
+            value="Male"
+            color="blue"
+          />
+          <p>Male</p>
+          <input
+            {...register("gender", { required: true })}
+            type="radio"
+            value="Femelle"
+            color="pink"
+          />
+          <p>Femelle</p>
+        </div>
         {errors.gender && <span>This field is required</span>}
       </div>
       <button type="submit" className={styles.submitButton}>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import addData from "@/firebase/services/add_data";
 import { useRouter } from "next/navigation";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { useMainStore } from "@/stores/main-store";
 import CreatePetForm from "../forms/pet/CreatePetForm";
+import { getPetsByUser } from "@/services/pet/pet_service";
+import { useState, useEffect } from "react";
 
 interface HomePageProps {
   email?: string;
@@ -21,11 +21,27 @@ export default function Dashboard({ email }: HomePageProps) {
 
     router.push("/login");
   }
-  const [error, setError] = useState("");
 
   const { openModal } = useMainStore().actions;
   const { modal } = useMainStore();
-  console.log(modal);
+  const [pets, setPets] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const petsData = await getPetsByUser();
+        setPets(petsData);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
+  }, []);
+  console.log("pets", pets);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">

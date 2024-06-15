@@ -67,3 +67,12 @@
 .submitButton:hover {
   background-color: #0056b3;
 }
+.radioGroup {
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+
+  p {
+    margin: auto 0;
+  }
+}
