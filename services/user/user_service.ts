@@ -1,4 +1,5 @@
 import { app, db } from "@/firebase/firebase";
+import useUserStore from "@/stores/user-store";
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -10,13 +11,7 @@ export async function createUserDocument(uid: string, email: string) {
 }
 
 export function getCurrentUserId(): string | null {
-  const auth = getAuth(app);
-  const user = auth.currentUser;
-  console.log("user", user);
-
-  if (user) {
-    return user.uid;
-  } else {
-    return null;
-  }
+  const userId = useUserStore.getState().id;
+  if (!userId) return null;
+  return userId;
 }

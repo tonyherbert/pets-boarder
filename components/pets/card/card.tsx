@@ -14,7 +14,6 @@ interface Pet {
 }
 
 const Card: React.FC<Pet> = ({ pet }) => {
-  console.log("PET", pet);
   return (
     <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="p-4">
