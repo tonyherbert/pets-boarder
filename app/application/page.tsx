@@ -17,5 +17,5 @@ export default async function Home() {
     notFound();
   }
 
-  return <ApplicationPage userId={tokens?.decodedToken.uid} />;
+  return <ApplicationPage />;
 }

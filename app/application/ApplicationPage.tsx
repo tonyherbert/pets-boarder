@@ -7,6 +7,7 @@ import { useMainStore } from "@/stores/main-store";
 import { getPetsByUser } from "@/services/pet/pet_service";
 import { useState, useEffect } from "react";
 import useUserStore from "@/stores/user-store";
+import { Logout } from "@/services/auth/auth_service";
 
 interface HomePageProps {
   userId?: string;
@@ -15,12 +16,8 @@ interface HomePageProps {
 export default function ApplicationPage({ userId }: HomePageProps) {
   const router = useRouter();
   async function handleLogout() {
-    await signOut(getAuth(app));
-    await fetch("/api/logout");
-    router.push("/login");
-    useUserStore.setState({
-      id: null,
-    });
+    const result = await Logout();
+    if (!result.error) router.push("/login");
   }
 
   const { openModal } = useMainStore().actions;

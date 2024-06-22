@@ -3,9 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../firebase/firebase";
-import useUserStore from "@/stores/user-store";
+import { signIn } from "@/services/auth/auth_service";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,20 +16,10 @@ export default function Login() {
     setError("");
 
     try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(app),
-        email,
-        password
-      );
-      const idToken = await credential.user.getIdToken();
-      useUserStore.setState({
-        id: credential.user.uid,
-        email: credential.user.email,
-      });
-
+      const credential = await signIn(email, password);
       await fetch("/api/login", {
         headers: {
-          Authorization: `Bearer ${idToken}`,
+          Authorization: `Bearer ${credential.idToken}`,
         },
       });
 
