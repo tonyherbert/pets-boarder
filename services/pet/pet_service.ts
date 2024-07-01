@@ -6,45 +6,43 @@ import {
   addDoc,
   query,
   getDocs,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { getCurrentUserId } from "../user/user_service";
 
-export async function createPet(userId: string, animalData: any) {
-  const animalsCollection = collection(db, `users/${userId}/animals`);
-  const animalDocRef = await addDoc(animalsCollection, animalData);
+export async function createPet(userId: string, petDetails: any) {
+  const animalsCollection = collection(db, `pets`);
+  const animalDocRef = await addDoc(animalsCollection, {petDetails, ownerId: userId});
   return animalDocRef.id;
 }
 
 export async function addPetWeight(
   userId: string,
-  animalId: string,
+  petId: string,
   weightData: any
 ) {
   const weightsCollection = collection(
     db,
-    `users/${userId}/animals/${animalId}/weights`
+    "weight"
   );
-  const weightDocRef = await addDoc(weightsCollection, weightData);
+  const weightDocRef = await addDoc(weightsCollection, {weight:weightData, petId, date, ownerId: userId});
   return weightDocRef.id;
 }
 
 export async function getPetsByUser() {
   const userId = getCurrentUserId();
+  
+  const petsCollection = collection(db,"pets");  
 
-  // Référence à la collection des animaux de l'utilisateur
-  const animalsCollection = collection(db, `users/${userId}/animals`);
+  const q = query(petsCollection, where("ownerId", "==", userId));
 
-  // Créer une requête pour obtenir tous les documents de la collection
-  const q = query(animalsCollection);
-
-  // Récupérer les documents
   const querySnapshot = await getDocs(q);
 
-  // Transformer les documents en un tableau de données
-  const animals = querySnapshot.docs.map((doc) => ({
+  const pets = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
-
-  return animals;
+  
+  return pets;
 }

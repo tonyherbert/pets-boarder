@@ -1,6 +1,8 @@
 "use client";
+import CreatePetForm from "@/components/forms/pet/CreatePetForm";
 import Card from "@/components/pets/card/card";
 import { getPetsByUser } from "@/services/pet/pet_service";
+import { useMainStore } from "@/stores/main-store";
 import React, { useEffect, useState } from "react";
 
 const Pets = () => {
@@ -21,15 +23,23 @@ const Pets = () => {
 
     fetchPets();
   }, []);
+  console.log(pets);
 
-  console.log("pets", pets);
-
+  const { openModal } = useMainStore().actions;
   return loading ? (
     <div>Loading...</div>
   ) : (
-    pets.map((pet: any) => {
-      return <Card pet={pet} />;
-    })
+    <>
+      <button
+        onClick={() => openModal(<CreatePetForm />)}
+        className="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-primary-800"
+      >
+        Logout
+      </button>
+      {pets.map((pet: any) => {
+        return <Card pet={pet} />;
+      })}
+    </>
   );
 };
 
