@@ -17,19 +17,6 @@ export async function createPet(userId: string, petDetails: any) {
   return animalDocRef.id;
 }
 
-export async function addPetWeight(
-  userId: string,
-  petId: string,
-  weightData: any
-) {
-  const weightsCollection = collection(
-    db,
-    "weight"
-  );
-  const weightDocRef = await addDoc(weightsCollection, {weight:weightData, petId, date, ownerId: userId});
-  return weightDocRef.id;
-}
-
 export async function getPetsByUser() {
   const userId = getCurrentUserId();
   
