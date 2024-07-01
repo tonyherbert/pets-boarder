@@ -30,7 +30,6 @@ export async function addPetWeight(
 
 export async function getPetsByUser() {
   const userId = getCurrentUserId();
-  console.log("userid", userId);
 
   // Référence à la collection des animaux de l'utilisateur
   const animalsCollection = collection(db, `users/${userId}/animals`);

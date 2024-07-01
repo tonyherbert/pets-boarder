@@ -3,8 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/services/auth/auth_service";
-import { createUserDocument } from "@/services/user/user_service";
+import { signUp } from "@/services/auth/auth_service";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -15,7 +14,6 @@ export default function Register() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-
     setError("");
 
     if (password !== confirmation) {
@@ -24,11 +22,7 @@ export default function Register() {
     }
 
     try {
-      const userCredential = await registerUser(email, password);
-      const user = userCredential.user;
-
-      await createUserDocument(user.uid, user.email!);
-
+      await signUp(email, password);
       router.push("/login");
     } catch (e) {
       setError((e as Error).message);

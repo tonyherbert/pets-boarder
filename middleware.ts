@@ -7,7 +7,6 @@ import {
 import { clientConfig, serverConfig } from "./config";
 
 const PUBLIC_PATHS = ["/register", "/login"];
-console.log("test ////", serverConfig.serviceAccount);
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
@@ -25,6 +24,7 @@ export async function middleware(request: NextRequest) {
       if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) {
         return NextResponse.redirect(new URL("/application", request.url));
       }
+      headers.set("X-User-Id", decodedToken.uid);
 
       return NextResponse.next({
         request: {

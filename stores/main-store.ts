@@ -1,5 +1,4 @@
-// src/stores/modalStore.ts
-import create from "zustand";
+import { create } from "zustand";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 interface ModalState {

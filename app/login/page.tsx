@@ -3,8 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../firebase/firebase";
+import { signIn } from "@/services/auth/auth_service";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,20 +16,14 @@ export default function Login() {
     setError("");
 
     try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(app),
-        email,
-        password
-      );
-      const idToken = await credential.user.getIdToken();
-
+      const credential = await signIn(email, password);
       await fetch("/api/login", {
         headers: {
-          Authorization: `Bearer ${idToken}`,
+          Authorization: `Bearer ${credential.idToken}`,
         },
       });
 
-      router.push("application");
+      router.push("application/pets");
     } catch (e) {
       setError((e as Error).message);
     }

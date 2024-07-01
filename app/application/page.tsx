@@ -2,8 +2,8 @@ import { getTokens } from "next-firebase-auth-edge";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { clientConfig, serverConfig } from "../../config";
-import Dashboard from "../../components/dashboard/page";
-import LayoutApp from "./layout";
+import ApplicationPage from "./ApplicationPage";
+import useUserStore from "@/stores/user-store";
 
 export default async function Home() {
   const tokens = await getTokens(cookies(), {
@@ -17,5 +17,5 @@ export default async function Home() {
     notFound();
   }
 
-  return <Dashboard email={tokens?.decodedToken.email} />;
+  return <ApplicationPage />;
 }
