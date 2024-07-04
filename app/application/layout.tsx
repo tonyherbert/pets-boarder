@@ -2,14 +2,13 @@
 import GenericModal from "@/components/modal/GenericModal";
 import SidebarLayout from "@/components/sidebar/sidebarLayout";
 import { useMainStore } from "@/stores/main-store";
-import styles from "./layout.module.scss";
 
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
   const { modal } = useMainStore();
   return (
     <div className="relative flex h-screen">
       <SidebarLayout />
-      <main className="container relative mx-auto max-w-7xl px-16 flex-grow pt-16 overflow-auto">
+      <main className="container relative mx-auto max-w-7xl px-16 flex-grow pt-16 overflow-auto max-w-none">
         {modal && <GenericModal>{useMainStore.getState().modal} </GenericModal>}
         {children}
       </main>
