@@ -35,7 +35,7 @@ export async function getPetsByUser() {
   return pets;
 }
 
-export async function getPetById(id: string) {
+export async function getPetById(id: string): Promise<Pet | undefined> {
   const petDoc = doc(db, "pets", id);
   const petSnapshot = await getDoc(petDoc);
 
@@ -43,6 +43,6 @@ export async function getPetById(id: string) {
     throw new Error(`No pet found with id: ${id}`);
   }
 
-  return { id: petSnapshot.id, ...petSnapshot.data() };
+  return { id: petSnapshot.id, ...petSnapshot.data()  } as Pet;
 }
 

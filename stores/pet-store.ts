@@ -1,6 +1,8 @@
-import { create } from 'zustand';
+// usePetStore.ts
+
+import create from 'zustand';
 import { PetForm, Pet } from '@/types/Pets';
-import { createPet, getPetsByUser } from '@/services/pet/pet_service';
+import { createPet, getPetsByUser, getPetById } from '@/services/pet/pet_service';
 
 interface PetStoreState {
   pets: Pet[];
@@ -9,6 +11,7 @@ interface PetStoreState {
   actions: {
     fetchPets: () => Promise<void>;
     createPet: (userId: string, petDetails: PetForm) => Promise<void>;
+    getPetById: (id: string) => Promise<Pet | undefined>;
   };
 }
 
@@ -23,16 +26,28 @@ const usePetStore = create<PetStoreState>((set) => ({
         const pets = await getPetsByUser();
         set({ pets, loading: false });
       } catch (error) {
+        console.error('Error fetching pets:', error);
         set({ error: error.message, loading: false });
       }
     },
     createPet: async (userId: string, petDetails: PetForm) => {
+      set({ loading: true, error: null });
       try {
-        set({ loading: true, error: null });
         await createPet(userId, petDetails);
-        const pets = await getPetsByUser();
-        set({ pets, loading: false });
+        await actions.fetchPets(); // Rafraîchir les pets après la création
       } catch (error) {
+        console.error('Error creating pet:', error);
+        set({ error: error.message, loading: false });
+      }
+    },
+    getPetById: async (id: string) => {
+      set({ loading: true, error: null });
+      try {
+        const pet = await getPetById(id);
+        set({loading: false });     
+         return pet;
+      } catch (error) {
+        console.error('Error fetching pet by id:', error);
         set({ error: error.message, loading: false });
       }
     },
