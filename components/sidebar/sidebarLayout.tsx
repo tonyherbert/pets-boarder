@@ -14,33 +14,24 @@ import { getPetsByUser } from "@/services/pet/pet_service";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import styles from "./sidebar.module.scss";
 import Link from "next/link";
+import usePetStore from "@/stores/pet-store";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [pets, setPets] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
+
   const [toggled, setToggled] = useState(false);
   const isSmallDevice = useMediaQuery(600);
+
+  const { pets, loading, error, actions } = usePetStore();
+
   const handleToggleSidebar = () => {
     setToggled(!toggled);
     setCollapsed(false);
   };
-  console.log(pets);
-  useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        const petsData = await getPetsByUser();
-        setPets(petsData);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchPets();
-  }, []);
+  useEffect(() => {
+    actions.fetchPets();
+  }, [actions]);
 
   useEffect(() => {
     if (!isSmallDevice) {

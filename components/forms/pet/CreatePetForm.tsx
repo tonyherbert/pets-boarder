@@ -6,18 +6,20 @@ import { createPet } from "@/services/pet/pet_service";
 import { getCurrentUserId } from "@/services/user/user_service";
 import { useMainStore } from "@/stores/main-store";
 import { PetForm } from "@/types/Pets";
+import usePetStore from "@/stores/pet-store";
 
 const CreatePetForm: React.FC = () => {
   const { closeModal } = useMainStore().actions;
+  const { actions, loading, error } = usePetStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<PetForm>();
 
-  const onSubmit: SubmitHandler<PetForm> = (data) => {
+  const onSubmit: SubmitHandler<PetForm> = async (data) => {
     const userId = getCurrentUserId();
-    createPet(userId!, data);
+    await actions.createPet(userId!, data);
     closeModal();
   };
 

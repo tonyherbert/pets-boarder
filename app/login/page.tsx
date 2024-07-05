@@ -23,7 +23,7 @@ export default function Login() {
         },
       });
 
-      router.push("application/pets");
+      router.push("application");
     } catch (e) {
       setError((e as Error).message);
     }

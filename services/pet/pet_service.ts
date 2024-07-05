@@ -11,8 +11,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getCurrentUserId } from "../user/user_service";
-import { PetForm, Pets } from "@/types/Pets";
-import { mapFirestoreDocToPet } from "@/utils/firestoreUtils";
+import { Pet, PetForm } from "@/types/Pets";
 
 
 export async function createPet(userId: string, petDetails: PetForm) {
@@ -31,7 +30,7 @@ export async function getPetsByUser() {
   const pets = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  } as unknown as Pets));
+  } as unknown as Pet));
 
   return pets;
 }
