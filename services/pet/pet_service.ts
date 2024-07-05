@@ -11,8 +11,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getCurrentUserId } from "../user/user_service";
-import { PetForm, Pets } from "@/types/Pets";
-import { mapFirestoreDocToPet } from "@/utils/firestoreUtils";
+import { Pet, PetForm } from "@/types/Pets";
 
 
 export async function createPet(userId: string, petDetails: PetForm) {
@@ -31,12 +30,12 @@ export async function getPetsByUser() {
   const pets = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  } as unknown as Pets));
+  } as unknown as Pet));
 
   return pets;
 }
 
-export async function getPetById(id: string) {
+export async function getPetById(id: string): Promise<Pet | undefined> {
   const petDoc = doc(db, "pets", id);
   const petSnapshot = await getDoc(petDoc);
 
@@ -44,6 +43,6 @@ export async function getPetById(id: string) {
     throw new Error(`No pet found with id: ${id}`);
   }
 
-  return { id: petSnapshot.id, ...petSnapshot.data() };
+  return { id: petSnapshot.id, ...petSnapshot.data()  } as Pet;
 }
 
