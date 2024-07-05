@@ -1,0 +1,39 @@
+.container-pet-details {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    gap: 1em 1em;
+    grid-template-areas:
+        "identity vaccines"
+        "weight size";
+    height: 100vh;
+}
+
+.identity {
+    grid-area: identity;
+}
+
+.vaccines {
+    grid-area: vaccines;
+}
+
+.weight {
+    grid-area: weight;
+}
+
+.size {
+    grid-area: size;
+}
+
+@media (max-width: 768px) {
+    .container-pet-details {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "identity"
+            "vaccines"
+            "weight"
+            "size";
+        height: auto;
+    }
+}

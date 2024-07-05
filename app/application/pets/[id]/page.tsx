@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import usePetStore from "@/stores/pet-store";
 import { Pet } from "@/types/Pets";
+import Card from "@/components/pets/card/card";
+import "./page.scss";
 
 const PetDetail = ({ params }: { params: { id: string } }) => {
   const [pet, setPet] = useState<Pet | undefined>();
@@ -25,9 +27,13 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div>
-      <h1>{pet.name}</h1>
-      {/* Affichez d'autres informations sur l'animal */}
+    <div className="container-pet-details">
+      <div className="identity">
+        <Card data={pet} />
+      </div>
+      <div className="vaccines"></div>
+      <div className="weight"></div>
+      <div className="size"></div>
     </div>
   );
 };
