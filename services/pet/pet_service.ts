@@ -11,27 +11,25 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { getCurrentUserId } from "../user/user_service";
+import { PetForm, Pets } from "@/types/Pets";
+import { mapFirestoreDocToPet } from "@/utils/firestoreUtils";
 
-export async function createPet(userId: string, petDetails: any) {
-  const animalsCollection = collection(db, `pets`);
-  const animalDocRef = await addDoc(animalsCollection, {petDetails, ownerId: userId});
+
+export async function createPet(userId: string, petDetails: PetForm) {
+  const  animalsCollection = collection(db, `pets`);
+  const  animalDocRef      = await addDoc(animalsCollection, {...petDetails, ownerId: userId});
   return animalDocRef.id;
 }
 
-export async function getPetsByUser() {
+export async function getPetsByUser(): Promise<Pets> {
+
   const userId = getCurrentUserId();
-  
+
   const petsCollection = collection(db,"pets");  
+  const q              = query(petsCollection, where("ownerId", "==", userId));
+  const querySnapshot  = await getDocs(q);
 
-  const q = query(petsCollection, where("ownerId", "==", userId));
-
-  const querySnapshot = await getDocs(q);
-
-  const pets = querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  
+  const pets = querySnapshot.docs.map(mapFirestoreDocToPet);
   return pets;
 }
 
