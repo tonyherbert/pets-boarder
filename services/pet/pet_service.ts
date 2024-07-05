@@ -21,15 +21,18 @@ export async function createPet(userId: string, petDetails: PetForm) {
   return animalDocRef.id;
 }
 
-export async function getPetsByUser(): Promise<Pets> {
-
+export async function getPetsByUser() {
   const userId = getCurrentUserId();
 
   const petsCollection = collection(db,"pets");  
   const q              = query(petsCollection, where("ownerId", "==", userId));
   const querySnapshot  = await getDocs(q);
 
-  const pets = querySnapshot.docs.map(mapFirestoreDocToPet);
+  const pets = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  } as unknown as Pets));
+
   return pets;
 }
 
