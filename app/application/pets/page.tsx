@@ -23,7 +23,6 @@ const Pets = () => {
 
     fetchPets();
   }, []);
-  console.log(pets);
 
   const { openModal } = useMainStore().actions;
   return loading ? (
@@ -34,7 +33,7 @@ const Pets = () => {
         onClick={() => openModal(<CreatePetForm />)}
         className="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-primary-800"
       >
-        Logout
+        Create
       </button>
       {pets.map((pet: any) => {
         return <Card pet={pet} />;
