@@ -109,7 +109,7 @@ const SidebarLayout = () => {
               <Link href={`/application/pets/${pet.id}`}>
                 {" "}
                 <MenuItem rootStyles={hoverStyles} key={pet.name}>
-                  {pet.petDetails.name}
+                  {pet.name}
                 </MenuItem>
               </Link>
             ))}

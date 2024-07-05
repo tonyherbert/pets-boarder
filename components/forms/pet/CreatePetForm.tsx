@@ -5,16 +5,7 @@ import styles from "./CreatePetForm.module.scss";
 import { createPet } from "@/services/pet/pet_service";
 import { getCurrentUserId } from "@/services/user/user_service";
 import { useMainStore } from "@/stores/main-store";
-
-type FormValues = {
-  chipNumber: string;
-  lof: string;
-  animalType: string;
-  breed: string;
-  name: string;
-  birthDate: string;
-  gender: string;
-};
+import { PetForm } from "@/types/Pets";
 
 const CreatePetForm: React.FC = () => {
   const { closeModal } = useMainStore().actions;
@@ -22,9 +13,9 @@ const CreatePetForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<PetForm>();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<PetForm> = (data) => {
     const userId = getCurrentUserId();
     createPet(userId!, data);
     closeModal();
