@@ -24,6 +24,7 @@
     "react-hook-form": "^7.51.5",
     "react-icons": "^5.2.1",
     "react-pro-sidebar": "^1.1.0",
+    "recharts": "^2.12.7",
     "sass": "^1.77.1",
     "ts-node": "^10.9.2",
     "zustand": "^4.5.2"

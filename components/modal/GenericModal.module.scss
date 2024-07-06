@@ -11,10 +11,12 @@
   box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.5);
   padding: 1rem;
   border-radius: 0.5rem;
+  z-index: 1;
 }
 
 .modal.small {
-  width: 90%; /* Adjust as needed for small screens */
+  width: 90%;
+  /* Adjust as needed for small screens */
 }
 
 .modal-content {

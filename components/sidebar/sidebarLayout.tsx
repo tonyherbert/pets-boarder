@@ -59,7 +59,10 @@ const SidebarLayout = () => {
   return (
     <React.Fragment>
       {isSmallDevice && (
-        <button className="mb-auto mt-5 ml-5" onClick={handleToggleSidebar}>
+        <button
+          className="mb-auto mt-5 ml-5 absolute z-1"
+          onClick={handleToggleSidebar}
+        >
           <FaBars />
         </button>
       )}
@@ -68,7 +71,7 @@ const SidebarLayout = () => {
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         customBreakPoint="600px"
-        backgroundColor="#1F2A40"
+        backgroundColor="#282828"
       >
         <header className="flex items-center justify-center justify-evenly p-4">
           {!isSmallDevice && (
