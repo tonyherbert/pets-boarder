@@ -37,46 +37,47 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
     closeModal();
   };
 
-  useEffect(() => {
-    register("unit", { required: true });
-    setValue("unit", unit);
-  }, [register, setValue, unit]);
-
-  const handleUnitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUnit(e.target.value);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-      <div className={`${styles.formGroup} `}>
-        <label htmlFor="weight">Weight</label>
-        <input
-          type="text"
-          id="weight"
-          {...register("weight", { required: true })}
-        />
-        {errors.weight && <span>This field is required</span>}
-      </div>
-      <div className={`${styles.formGroup} `}>
-        <label htmlFor="unit">Unit</label>
-        <select id="unit" value={unit} onChange={handleUnitChange}>
-          <option value="kg">kg</option>
-          <option value="lbs">lbs</option>
-        </select>
-        {errors.unit && <span>This field is required</span>}
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="date">Date</label>
-        <input
-          type="date"
-          id="date"
-          {...register("date", { required: true })}
-        />
-        {errors.date && <span>This field is required</span>}
-      </div>
+    <>
+      <h3>adding weight to your pet</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <div className={`${styles.formGroup} `}>
+          <label htmlFor="weight">Weight</label>
+          <input
+            type="text"
+            id="weight"
+            {...register("weight", { required: true })}
+          />
+          {errors.weight && <span>This field is required</span>}
+        </div>
+        <div className={styles.radioGroup}>
+          <input
+            {...register("unit", { required: true })}
+            type="radio"
+            value="kg"
+            defaultChecked
+          />
+          <p>Kg</p>
+          <input
+            {...register("unit", { required: true })}
+            type="radio"
+            value="lbs"
+          />
+          <p>Lbs</p>
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="date">Date</label>
+          <input
+            type="date"
+            id="date"
+            {...register("date", { required: true })}
+          />
+          {errors.date && <span>This field is required</span>}
+        </div>
 
-      <Button icon={<IoMdAddCircle />}>add</Button>
-    </form>
+        <Button icon={<IoMdAddCircle />}>add weight</Button>
+      </form>
+    </>
   );
 };
 
