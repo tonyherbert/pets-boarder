@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/application", request.url));
   }
-  return authMiddleware(request, {
+  
+return authMiddleware(request, {
     loginPath: "/api/login",
     logoutPath: "/api/logout",
     apiKey: clientConfig.apiKey,
@@ -34,7 +35,8 @@ export async function middleware(request: NextRequest) {
     },
     handleInvalidToken: async (reason) => {
       console.info("Missing or malformed credentials", { reason });
-      return redirectToLogin(request, {
+      
+return redirectToLogin(request, {
         path: "/login",
         publicPaths: PUBLIC_PATHS,
       });

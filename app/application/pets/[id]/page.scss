@@ -34,6 +34,11 @@
     grid-area: size;
 }
 
+.add-weight-button {
+    width: fit-content;
+    margin-left: auto;
+}
+
 @media (max-width: 768px) {
     .container-pet-details {
         grid-template-columns: 1fr;

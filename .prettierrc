@@ -1,0 +1,14 @@
+{
+    "plugins": [
+        "prettier-plugin-align"
+    ],
+    "align": [
+        {
+            "operators": [
+                "="
+            ],
+            "includeComments": false,
+            "alignment": "assign"
+        }
+    ]
+}

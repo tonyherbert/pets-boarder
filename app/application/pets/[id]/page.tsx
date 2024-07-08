@@ -55,6 +55,7 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
       <div className="weight">
         <LineChart data={weights!} title="weight curve monitoring" />
         <Button
+          className="add-weight-button"
           onClick={() => openModal(<CreateWeightForm petId={pet.id} />)}
           icon={<FaWeight />}
         >

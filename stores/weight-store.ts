@@ -2,9 +2,8 @@ import { WeightChart, WeightForm } from '@/types/Weight';
 // usePetStore.ts
 
 import create from 'zustand';
-import { PetForm, Pet } from '@/types/Pets';
 import { addPetWeight, getPetWeights } from '@/services/pet/weight_service';
-import { getCurrentUserId } from '@/services/user/user_service';
+import { getCurrentUserId }    from '@/services/user/user_service';
 import { SimplifyToWeigthsArray } from '@/utils/convert';
 
 interface WeightStoreState {

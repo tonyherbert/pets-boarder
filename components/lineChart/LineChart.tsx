@@ -18,7 +18,8 @@ interface LineChartProps {
 const LineChart: React.FC<LineChartProps> = ({ data, title }) => {
   const formatTooltip = (value: number, name: string, props: any) => {
     const unit = props.payload.unit;
-    return [`${value} ${unit}`, name];
+    
+return [`${value} ${unit}`, name];
   };
 
   return (
