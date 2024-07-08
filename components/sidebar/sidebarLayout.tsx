@@ -68,7 +68,7 @@ const SidebarLayout = () => {
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         customBreakPoint="600px"
-        backgroundColor="#131B2D"
+        backgroundColor="#1F2A40"
       >
         <header className="flex items-center justify-center justify-evenly p-4">
           {!isSmallDevice && (
