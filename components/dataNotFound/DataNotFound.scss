@@ -1,0 +1,16 @@
+.no-data-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    color: #ff6b6b;
+}
+
+.no-data-icon {
+    margin-bottom: 10px;
+}
+
+.no-data-text {
+    font-size: 18px;
+}

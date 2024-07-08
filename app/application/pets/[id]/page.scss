@@ -4,9 +4,10 @@
     grid-template-rows: 50% 50%;
     gap: 1em 1em;
     grid-template-areas:
-        "identity vaccines"
-        "weight size";
+        "identity weight "
+        "vaccines size";
     height: 100vh;
+
 }
 
 .identity {
@@ -19,10 +20,23 @@
 
 .weight {
     grid-area: weight;
+    display: grid;
+    grid-template-rows: 5% auto 10%;
+    gap: 1rem;
+
+    h3 {
+        text-align: center;
+        font-weight: 700;
+    }
 }
 
 .size {
     grid-area: size;
+}
+
+.add-weight-button {
+    width: fit-content;
+    margin-left: auto;
 }
 
 @media (max-width: 768px) {
@@ -31,9 +45,25 @@
         grid-template-rows: auto;
         grid-template-areas:
             "identity"
-            "vaccines"
             "weight"
-            "size";
+            "size"
+            "vaccines";
         height: auto;
+        row-gap: 5rem;
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .container-pet-details {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "identity"
+            "weight"
+            "size"
+            "vaccines";
+        height: auto;
+        row-gap: 5rem;
     }
 }

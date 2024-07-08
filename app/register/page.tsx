@@ -18,7 +18,8 @@ export default function Register() {
 
     if (password !== confirmation) {
       setError("Passwords don't match");
-      return;
+      
+return;
     }
 
     try {
