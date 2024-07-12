@@ -1,5 +1,5 @@
 import { Weight, WeightForm, WeightFromFirestore } from "@/types/Weight";
-import { db } from "../../firebase/firebase";
+import { db } from "../../../firebase/firebase";
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 
@@ -26,7 +26,7 @@ export async function getPetWeights(
   );
   const querySnapshot = await getDocs(q);
 
-  const weights: Weight[] = [];
+  const weights: WeightFromFirestore[] = [];
   querySnapshot.forEach((doc) => {
     weights.push({ id: doc.id, ...doc.data() } as Weight );
   });

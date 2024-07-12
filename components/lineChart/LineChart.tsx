@@ -9,17 +9,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import DataNotFound from "../dataNotFound/DataNotFound";
+import { WeightChart, WeightForm } from "@/types/Weight";
+import useWeightStore from "@/stores/weight-store";
 
 interface LineChartProps {
-  data: Array<{ name: string; value: number; unit: string }>;
+  data:WeightChart[];
   title?: string;
+  loading?: boolean;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, title }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, title, loading }) => {
   const formatTooltip = (value: number, name: string, props: any) => {
     const unit = props.payload.unit;
-    
-return [`${value} ${unit}`, name];
+      return [`${value} ${unit}`, name];
   };
 
   return (

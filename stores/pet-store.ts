@@ -2,7 +2,7 @@
 
 import create from 'zustand';
 import { PetForm, Pet } from '@/types/Pets';
-import { createPet, getPetsByUser, getPetById } from '@/services/pet/pet_service';
+import { getPetsByUser, createPet, getPetById } from '@/services/firebase/pet/pet_service';
 
 interface PetStoreState {
   pets: Pet[];

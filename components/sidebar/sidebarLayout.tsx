@@ -10,9 +10,7 @@ import { AiOutlineDashboard } from "react-icons/ai";
 import { CiSettings } from "react-icons/ci";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaBars } from "react-icons/fa";
 import { PiDogBold } from "react-icons/pi";
-import { getPetsByUser } from "@/services/pet/pet_service";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import styles from "./sidebar.module.scss";
 import Link from "next/link";
 import usePetStore from "@/stores/pet-store";
 
