@@ -11,8 +11,8 @@ import CreateWeightForm from "@/components/forms/pet/CreateWeightForm";
 import { useMainStore } from "@/stores/main-store";
 import useWeightStore from "@/stores/weight-store";
 import { getCurrentUserId } from "@/services/user/user_service";
-import { fetchAndSetWeights } from "@/services/weightActions";
 import { SimplifyToWeigthsArray } from "@/utils/convert";
+import { fetchAndSetWeights } from "@/dataManager/weightDataManager";
 
 const PetDetail = ({ params }: { params: { id: string } }) => {
   const [pet, setPet] = useState<Pet | undefined>();

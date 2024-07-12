@@ -19,8 +19,7 @@ export const addWeightAndUpdateStore = async (petId: string, data: WeightForm) =
   const userId = getCurrentUserId();
   try {
      addWeightService(userId!, petId, data).then(() => {
-             fetchAndSetWeights(userId!, petId);
-
+     fetchAndSetWeights(userId!, petId);
      });
   } catch (error) {
     console.error('Error adding weight and updating store:', error);

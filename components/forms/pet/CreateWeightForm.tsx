@@ -7,7 +7,7 @@ import usePetStore from "@/stores/pet-store";
 import { WeightForm } from "@/types/Weight";
 import Button from "@/components/button/Button";
 import { IoMdAddCircle } from "react-icons/io";
-import { addWeightAndUpdateStore } from "@/services/weightActions";
+import { addWeightAndUpdateStore } from "@/dataManager/weightDataManager";
 
 interface CreateWeightFormProps {
   petId: string;
