@@ -13,10 +13,10 @@ import useWeightStore from "@/stores/weight-store";
 import { getCurrentUserId } from "@/services/user/user_service";
 import { SimplifyToWeigthsArray } from "@/utils/convert";
 import { fetchAndSetWeights } from "@/dataManager/weightDataManager";
+import { getPetByIdAndUpdateStore } from "@/dataManager/petDataManager";
 
 const PetDetail = ({ params }: { params: { id: string } }) => {
-  const [pet, setPet] = useState<Pet | undefined>();
-  const { actions } = usePetStore();
+  const { selectedPet } = usePetStore();  
   const { weights, loading } = useWeightStore();
   const { openModal } = useMainStore().actions;
   
@@ -24,15 +24,14 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchPet = async () => {
       try {
-        const fetchedPet = await actions.getPetById(params.id);
-        setPet(fetchedPet);
+        getPetByIdAndUpdateStore(params.id);
       } catch (error) {
         console.error("Error fetching pet:", error);
       }
     };
 
     fetchPet();
-  }, [params.id, actions]);
+  }, [params.id]);
 
   useEffect(() => {
     const fetchPetWeights = async () => {
@@ -47,20 +46,20 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
     fetchPetWeights();
   }, [params.id]);
 
-  if (!pet) {
+  if (!selectedPet) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="container-pet-details">
       <div className="identity">
-        <Card data={pet} />
+        <Card data={selectedPet!} />
       </div>
       <div className="weight">
         <LineChart data={SimplifyToWeigthsArray(weights)} title="weight curve monitoring" loading={loading} />
         <Button
           className="add-weight-button"
-          onClick={() => openModal(<CreateWeightForm petId={pet.id} />)}
+          onClick={() => openModal(<CreateWeightForm petId={selectedPet!.id} />)}
           icon={<FaWeight />}
         >
           Add weight

@@ -13,6 +13,7 @@ import { PiDogBold } from "react-icons/pi";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import Link from "next/link";
 import usePetStore from "@/stores/pet-store";
+import { fetchAndSetPets } from "@/dataManager/petDataManager";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -20,7 +21,7 @@ const SidebarLayout = () => {
   const [toggled, setToggled] = useState(false);
   const isSmallDevice = useMediaQuery(600);
 
-  const { pets, loading, error, actions } = usePetStore();
+  const { pets} = usePetStore();
 
   const handleToggleSidebar = () => {
     setToggled(!toggled);
@@ -28,8 +29,8 @@ const SidebarLayout = () => {
   };
 
   useEffect(() => {
-    actions.fetchPets();
-  }, [actions]);
+   fetchAndSetPets();
+  }, []);
 
   useEffect(() => {
     if (!isSmallDevice) {

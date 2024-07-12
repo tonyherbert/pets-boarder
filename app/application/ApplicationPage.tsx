@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { useMainStore } from "@/stores/main-store";
-import { getPetsByUser } from "@/services/pet/pet_service";
 import { useState, useEffect } from "react";
 import useUserStore from "@/stores/user-store";
 import { Logout } from "@/services/auth/auth_service";
+import { getPetByIdAndUpdateStore } from "@/dataManager/petDataManager";
 
 interface HomePageProps {
   userId?: string;
@@ -29,8 +29,7 @@ export default function ApplicationPage({ userId }: HomePageProps) {
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const petsData = await getPetsByUser();
-        setPets(petsData);
+getPetByIdAndUpdateStore(userId!);      
       } catch (err: any) {
         setError(err.message);
       } finally {
