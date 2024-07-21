@@ -1,38 +1,23 @@
-import { db } from "../../firebase/firebase";
+import { Weight, WeightForm, WeightFromFirestore } from "@/types/Weight";
+import { db } from "../../../firebase/firebase";
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
-type WeightData = {
-  value: number;
-  unit: string;
-};
 
-type Weight = {
-  id: string;
-  weight: WeightData;
-  petId: string;
-  date: Date;
-  ownerId: string;
-};
 
 export async function addPetWeight(
   userId: string,
   petId: string,
-  weightData: WeightData
+  weightData: WeightForm
 ): Promise<string> {
   const weightsCollection = collection(db, "weight");
-  const weightDocRef = await addDoc(weightsCollection, {
-    weight: weightData,
-    petId,
-    date: new Date(),
-    ownerId: userId,
-  });
+  const weightDocRef = await addDoc(weightsCollection, {...weightData, ownerId: userId, petId, createdAt: new Date()});
   return weightDocRef.id;
 }
 
 export async function getPetWeights(
   userId: string,
   petId: string
-): Promise<Weight[]> {
+): Promise<WeightFromFirestore[]> {
   const weightsCollection = collection(db, "weight");
   const q = query(
     weightsCollection,
@@ -41,11 +26,10 @@ export async function getPetWeights(
   );
   const querySnapshot = await getDocs(q);
 
-  const weights: Weight[] = [];
+  const weights: WeightFromFirestore[] = [];
   querySnapshot.forEach((doc) => {
-    weights.push({ id: doc.id, ...doc.data() } as Weight);
+    weights.push({ id: doc.id, ...doc.data() } as Weight );
   });
-
   return weights;
 }
 

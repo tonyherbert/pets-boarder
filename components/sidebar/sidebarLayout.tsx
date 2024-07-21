@@ -10,11 +10,10 @@ import { AiOutlineDashboard } from "react-icons/ai";
 import { CiSettings } from "react-icons/ci";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaBars } from "react-icons/fa";
 import { PiDogBold } from "react-icons/pi";
-import { getPetsByUser } from "@/services/pet/pet_service";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import styles from "./sidebar.module.scss";
 import Link from "next/link";
 import usePetStore from "@/stores/pet-store";
+import { fetchAndSetPets } from "@/dataManager/petDataManager";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -22,7 +21,7 @@ const SidebarLayout = () => {
   const [toggled, setToggled] = useState(false);
   const isSmallDevice = useMediaQuery(600);
 
-  const { pets, loading, error, actions } = usePetStore();
+  const { pets} = usePetStore();
 
   const handleToggleSidebar = () => {
     setToggled(!toggled);
@@ -30,8 +29,8 @@ const SidebarLayout = () => {
   };
 
   useEffect(() => {
-    actions.fetchPets();
-  }, [actions]);
+   fetchAndSetPets();
+  }, []);
 
   useEffect(() => {
     if (!isSmallDevice) {
@@ -59,7 +58,10 @@ const SidebarLayout = () => {
   return (
     <React.Fragment>
       {isSmallDevice && (
-        <button className="mb-auto mt-5 ml-5" onClick={handleToggleSidebar}>
+        <button
+          className="mb-auto mt-5 ml-5 absolute z-1"
+          onClick={handleToggleSidebar}
+        >
           <FaBars />
         </button>
       )}
@@ -68,7 +70,7 @@ const SidebarLayout = () => {
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
         customBreakPoint="600px"
-        backgroundColor="#131B2D"
+        backgroundColor="#282828"
       >
         <header className="flex items-center justify-center justify-evenly p-4">
           {!isSmallDevice && (

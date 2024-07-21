@@ -2,15 +2,14 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreatePetForm.module.scss";
-import { createPet } from "@/services/pet/pet_service";
 import { getCurrentUserId } from "@/services/user/user_service";
 import { useMainStore } from "@/stores/main-store";
 import { PetForm } from "@/types/Pets";
 import usePetStore from "@/stores/pet-store";
+import { addPetAndUpdateStore } from "@/dataManager/petDataManager";
 
 const CreatePetForm: React.FC = () => {
   const { closeModal } = useMainStore().actions;
-  const { actions, loading, error } = usePetStore();
   const {
     register,
     handleSubmit,
@@ -19,7 +18,7 @@ const CreatePetForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<PetForm> = async (data) => {
     const userId = getCurrentUserId();
-    await actions.createPet(userId!, data);
+    await addPetAndUpdateStore(userId!, data);
     closeModal();
   };
 

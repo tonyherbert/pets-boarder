@@ -10,8 +10,8 @@ import {
   orderBy,
   getDoc,
 } from "firebase/firestore";
-import { getCurrentUserId } from "../user/user_service";
 import { Pet, PetForm } from "@/types/Pets";
+import { getCurrentUserId } from "@/services/user/user_service";
 
 
 export async function createPet(userId: string, petDetails: PetForm) {
