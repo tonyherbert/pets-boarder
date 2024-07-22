@@ -106,16 +106,10 @@ const SidebarLayout = () => {
           <MenuItem rootStyles={hoverStyles} icon={<AiOutlineDashboard />}>
             Dashboard
           </MenuItem>
-          <SubMenu rootStyles={hoverStyles} label="Pets" icon={<PiDogBold />}>
-            {pets.map((pet: any) => (
-              <Link href={`/application/pets/${pet.id}`}>
-                {" "}
-                <MenuItem rootStyles={hoverStyles} key={pet.name}>
-                  {pet.name}
+          
+                <MenuItem href={`/application/pets`} rootStyles={hoverStyles} icon={<PiDogBold />}>
+                My Pets
                 </MenuItem>
-              </Link>
-            ))}
-          </SubMenu>
           <MenuItem rootStyles={hoverStyles} icon={<CiSettings />}>
             Settings
           </MenuItem>
