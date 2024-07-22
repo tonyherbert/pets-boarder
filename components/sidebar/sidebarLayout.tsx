@@ -14,6 +14,10 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import Link from "next/link";
 import usePetStore from "@/stores/pet-store";
 import { fetchAndSetPets } from "@/dataManager/petDataManager";
+import Button from "../button/Button";
+import { Logout } from "@/services/auth/auth_service";
+import { useRouter } from "next/navigation";
+import "./sidebar.scss"
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -27,6 +31,11 @@ const SidebarLayout = () => {
     setToggled(!toggled);
     setCollapsed(false);
   };
+ const router = useRouter();
+  async function handleLogout() {
+    const result = await Logout();
+    if (!result.error) router.push("/login");
+  }
 
   useEffect(() => {
    fetchAndSetPets();
@@ -111,6 +120,9 @@ const SidebarLayout = () => {
             Settings
           </MenuItem>
         </Menu>
+        <footer className="footer">        
+          <Button onClick={handleLogout}>Logout</Button>
+        </footer>
       </Sidebar>
     </React.Fragment>
   );
