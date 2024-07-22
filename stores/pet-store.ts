@@ -11,6 +11,7 @@ interface PetStoreState {
   error: string | null;
   actions: {
     setPets: (pets: Pet[]) => void;
+    setSelectedPet: (pet: Pet) => void;
   };
 }
 
@@ -21,6 +22,7 @@ const usePetStore = create<PetStoreState>((set) => ({
   error: null,
   actions: {
      setPets: (pets: Pet[]) => set({ pets }),  
+     setSelectedPet: (pet: Pet) => set({ selectedPet: pet }),
 }}),);
 
 export default usePetStore;

@@ -51,9 +51,10 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
   }
 
   return (
+    <>
+    <h1>{selectedPet.name}</h1>
     <div className="container-pet-details">
       <div className="identity">
-        <Card data={selectedPet!} />
       </div>
       <div className="weight">
         <LineChart data={SimplifyToWeigthsArray(weights)} title="weight curve monitoring" loading={loading} />
@@ -68,6 +69,7 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
       <div className="vaccines"></div>
       <div className="size"></div>
     </div>
+    </>
   );
 };
 
