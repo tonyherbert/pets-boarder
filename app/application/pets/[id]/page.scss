@@ -1,14 +1,16 @@
-.container-pet-details {
-    display: grid;
-    //grid-template-columns: 50% 50%;
-    //grid-template-rows: 50% 50%;
-    gap: 1em 1em;
-    grid-template-areas:
-        "weight "
-        "vaccines"
-        "size";
-    height: 100vh;
+.container {
+    display: flex;
+    flex-direction: column;
 
+    div {
+        margin-bottom: 1rem;
+    }
+}
+
+.MuiPaper-root {
+    background-color: #282828 !important;
+    height: 400px;
+    padding: 1rem;
 }
 
 .identity {
@@ -20,10 +22,6 @@
 }
 
 .weight {
-    grid-area: weight;
-    display: grid;
-    grid-template-rows: 5% auto 10%;
-    gap: 1rem;
 
     h3 {
         text-align: center;
@@ -38,6 +36,7 @@
 .add-weight-button {
     width: fit-content;
     margin-left: auto;
+    height: fit-content;
 }
 
 @media (max-width: 768px) {
