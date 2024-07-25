@@ -89,8 +89,7 @@ const PetDetail = ({ params }: { params: { id: string } }) => {
     <Button
           className="add-weight-button"
           onClick={() => openModal(<CreateVaccineForm petId={selectedPet!.id} />)}
-          icon={<FaSyringe />
-}
+          icon={<FaSyringe />}
         >
           Add vaccine
         </Button> <TableVaccines rows={vaccines}/>
