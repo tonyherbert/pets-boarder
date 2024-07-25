@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import DataNotFound from "../dataNotFound/DataNotFound";
 import { WeightChart, WeightForm } from "@/types/Weight";
@@ -32,13 +33,14 @@ const LineChart: React.FC<LineChartProps> = ({ data, title, loading }) => {
           <RechartsLineChart data={data}>
             <XAxis dataKey="name" />
             <YAxis />
+
             <Tooltip formatter={formatTooltip} />
             <Line
               type="monotone"
               dataKey="value"
               stroke="#036b91"
               activeDot={{ r: 8 }}
-            />
+strokeWidth={3}            />
           </RechartsLineChart>
         </ResponsiveContainer>
       ) : (

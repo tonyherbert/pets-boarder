@@ -7,7 +7,6 @@ import { useMainStore } from "@/stores/main-store";
 import usePetStore from "@/stores/pet-store";
 import { useEffect } from "react";
 import "./page.scss"
-import { populateDb } from "@/services/firebase/pet/vaccine_service";
 
 const Pets = () => {
     const { pets } = usePetStore();
@@ -25,7 +24,7 @@ const Pets = () => {
 
     return <>
         <h1>Pets</h1>
-        <Button className="button" onClick={populateDb}> Add a pet</Button>
+        <Button className="button" onClick={() => openModal(<CreatePetForm />)}> Add a pet</Button>
         <div className="grid-container">
         {pets.map((pet) => (
             <SimpleCard key={pet.id} data={pet} />

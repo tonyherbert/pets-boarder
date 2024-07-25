@@ -28,6 +28,8 @@ const SidebarLayout = () => {
   const { pets} = usePetStore();
 
   const handleToggleSidebar = () => {
+    console.log("test");
+    
     setToggled(!toggled);
     setCollapsed(false);
   };
@@ -37,9 +39,6 @@ const SidebarLayout = () => {
     if (!result.error) router.push("/login");
   }
 
-  useEffect(() => {
-   fetchAndSetPets();
-  }, []);
 
   useEffect(() => {
     if (!isSmallDevice) {
@@ -68,8 +67,8 @@ const SidebarLayout = () => {
     <React.Fragment>
       {isSmallDevice && (
         <button
-          className="mb-auto mt-5 ml-5 absolute z-1"
-          onClick={handleToggleSidebar}
+          className="mb-auto mt-5 ml-5 absolute z-10"
+          onClick={(handleToggleSidebar)}
         >
           <FaBars />
         </button>
