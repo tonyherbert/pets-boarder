@@ -17,35 +17,32 @@ import useVaccineStore from "@/stores/vaccine-store";
 import TableVaccines from "./components/VaccinesTable";
 import Paper from '@mui/material/Paper';
 import CreateWeightForm from "@/components/forms/pet/CreateWeightForm";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+
 
 
 const PetDetail = ({ params }: { params: { id: string } }) => {
   const { selectedPet } = usePetStore();  
-  const { weights, loading } = useWeightStore();
+  const { weights, loading, actions } = useWeightStore();
   const { vaccines } = useVaccineStore();
   const { openModal } = useMainStore().actions;
   
 
-  useEffect(() => {
-    const fetchPet = async () => {
-      try {
-        getPetByIdAndUpdateStore(params.id);
-      } catch (error) {
-        console.error("Error fetching pet:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchPet = async () => {
+  //     try {
+  //       getPetByIdAndUpdateStore(params.id);
+  //     } catch (error) {
+  //       console.error("Error fetching pet:", error);
+  //     }
+  //   };
 
-    fetchPet();
-  }, [params.id]);
+  //   fetchPet();
+  // }, [params.id]);
 
   useEffect(() => {
     const fetchPetWeights = async () => {
       try {
-        const userId = getCurrentUserId();
-        fetchAndSetWeights(userId!, params.id);
+        actions.fetchWeights(params.id);
       } catch (error) {
         console.error("Error fetching pet:", error);
       }

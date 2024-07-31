@@ -25,8 +25,6 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
   const [vaccines, setVaccines] = useState<Vaccine[]>([]);
   
   const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
-  console.log(selectedVaccine);
-
   const { closeModal } = useMainStore().actions;
   const { actions, loading, error } = usePetStore();
 

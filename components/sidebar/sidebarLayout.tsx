@@ -3,7 +3,6 @@ import {
   Sidebar,
   Menu,
   MenuItem,
-  SubMenu,
   menuClasses,
 } from "react-pro-sidebar";
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -11,13 +10,11 @@ import { CiSettings } from "react-icons/ci";
 import { FaAngleDoubleLeft, FaAngleDoubleRight, FaBars } from "react-icons/fa";
 import { PiDogBold } from "react-icons/pi";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import Link from "next/link";
 import usePetStore from "@/stores/pet-store";
-import { fetchAndSetPets } from "@/dataManager/petDataManager";
 import Button from "../button/Button";
-import { Logout } from "@/services/auth/auth_service";
 import { useRouter } from "next/navigation";
 import "./sidebar.scss"
+import { Logout } from "@/services/firebase/auth/auth_service";
 
 const SidebarLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -27,9 +24,7 @@ const SidebarLayout = () => {
 
   const { pets} = usePetStore();
 
-  const handleToggleSidebar = () => {
-    console.log("test");
-    
+  const handleToggleSidebar = () => {    
     setToggled(!toggled);
     setCollapsed(false);
   };

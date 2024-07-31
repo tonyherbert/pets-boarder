@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/services/auth/auth_service";
+import { signIn } from "@/services/firebase/auth/auth_service";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ export default function Login() {
         },
       });
 
-      router.push("application");
+      router.push("application/pets");
     } catch (e) {
       setError((e as Error).message);
     }

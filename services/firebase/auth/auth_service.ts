@@ -1,7 +1,7 @@
 import { app } from "@/firebase/firebase";
+import { createUserDocument } from "@/services/user/user_service";
 import useUserStore                                                                     from "@/stores/user-store";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { createUserDocument } from "../user/user_service";
 
 const auth = getAuth(app);
 

@@ -8,6 +8,7 @@ import { WeightForm } from "@/types/Weight";
 import Button from "@/components/button/Button";
 import { IoMdAddCircle } from "react-icons/io";
 import { addWeightAndUpdateStore } from "@/dataManager/weightDataManager";
+import useWeightStore from "@/stores/weight-store";
 
 interface CreateWeightFormProps {
   petId: string;
@@ -18,7 +19,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
 
   const { closeModal } = useMainStore().actions;
 
-  const { actions, loading, error } = usePetStore();
+  const { actions, loading, error } = useWeightStore();
   const {
     register,
     handleSubmit,
@@ -26,9 +27,8 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
   } = useForm<WeightForm>();
 
   const onSubmit: SubmitHandler<WeightForm> = async (data) => {
-    const userId = getCurrentUserId();
-    addWeightAndUpdateStore(petId,data);
-    closeModal();
+actions.createWeight(data, petId);   
+ closeModal();
   };
 
   return (

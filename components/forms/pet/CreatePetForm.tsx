@@ -1,15 +1,15 @@
-// CreatePetForm.tsx
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import styles from "./CreatePetForm.module.scss";
-import { getCurrentUserId } from "@/services/user/user_service";
-import { useMainStore } from "@/stores/main-store";
 import { PetForm } from "@/types/Pets";
+import { useMainStore } from "@/stores/main-store";
 import usePetStore from "@/stores/pet-store";
-import { addPetAndUpdateStore } from "@/dataManager/petDataManager";
+import { createPet, fetchPets } from "@/actions/pets";
 
 const CreatePetForm: React.FC = () => {
   const { closeModal } = useMainStore().actions;
+  const { actions } = usePetStore();
+
   const {
     register,
     handleSubmit,
@@ -17,9 +17,14 @@ const CreatePetForm: React.FC = () => {
   } = useForm<PetForm>();
 
   const onSubmit: SubmitHandler<PetForm> = async (data) => {
-    const userId = getCurrentUserId();
-    await addPetAndUpdateStore(userId!, data);
-    closeModal();
+    try {
+      await createPet(data);
+      const updatedPets = await fetchPets();
+      actions.setPets(updatedPets);
+      closeModal();
+    } catch (error) {
+      console.error('Error creating pet:', error);
+    }
   };
 
   return (
@@ -80,22 +85,22 @@ const CreatePetForm: React.FC = () => {
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="birthDate">Gender</label>
+        <label htmlFor="gender">Gender</label>
         <div className={styles.radioGroup}>
           <input
             {...register("gender", { required: true })}
             type="radio"
             value="Male"
-            color="blue"
+            id="genderMale"
           />
-          <p>Male</p>
+          <label htmlFor="genderMale">Male</label>
           <input
             {...register("gender", { required: true })}
             type="radio"
-            value="Femelle"
-            color="pink"
+            value="Female"
+            id="genderFemale"
           />
-          <p>Femelle</p>
+          <label htmlFor="genderFemale">Female</label>
         </div>
         {errors.gender && <span>This field is required</span>}
       </div>

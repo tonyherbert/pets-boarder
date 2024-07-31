@@ -1,36 +1,27 @@
-"use client";
-import Button from "@/components/button/Button";
-import CreatePetForm from "@/components/forms/pet/CreatePetForm";
-import SimpleCard from "@/components/simple-card/SimpleCard";
-import { fetchAndSetPets } from "@/dataManager/petDataManager";
-import { useMainStore } from "@/stores/main-store";
-import usePetStore from "@/stores/pet-store";
-import { useEffect } from "react";
-import "./page.scss"
+// "use client";
+// import { useEffect } from 'react';
+// import PetsClientComponent from './PetsClientComponent';
+// import usePetStore from '@/stores/pet-store';
 
-const Pets = () => {
-    const { pets } = usePetStore();
-    const { openModal } = useMainStore().actions;
- useEffect(() => {
-    const fetchPet = async () => {
-      try {
-        fetchAndSetPets();
-      } catch (error) {
-        console.error("Error fetching pet:", error);
-      }
-    };
-    fetchPet();
-  }, [pets]);
 
-    return <>
-        <h1>Pets</h1>
-        <Button className="button" onClick={() => openModal(<CreatePetForm />)}> Add a pet</Button>
-        <div className="grid-container">
-        {pets.map((pet) => (
-            <SimpleCard key={pet.id} data={pet} />
-        ))}
-        </div>
+// export default function PetsPage() {
+//   const { actions, pets, loading, error } = usePetStore();
 
-    </>;
-};
-export default Pets;
+//   useEffect(() => {
+//     actions.fetchPets();
+//   }, [actions]);
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error}</p>;
+
+//   return <PetsClientComponent initialPets={pets} />;
+// }
+import { use } from 'react';
+import { fetchPets } from '@/actions/pets';
+import PetsClientComponent from './PetsClientComponent';
+
+export default function PetsPage() {
+  const pets = use(fetchPets());  
+
+  return <PetsClientComponent initialPets={pets} />;
+}

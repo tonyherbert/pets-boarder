@@ -78,7 +78,6 @@ export async function addPetVaccine(
   vaccineData: VaccineForm
 ): Promise<string> {
   const vaccinesCollection = collection(db, "vaccine");
-console.log(vaccineData);
 
   const petDocRef = doc(db, "pets", petId); 
 
