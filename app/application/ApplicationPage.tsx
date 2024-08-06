@@ -1,12 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/firebase/firebase";
-import { useMainStore } from "@/stores/main-store";
-import { useState, useEffect } from "react";
-import useUserStore from "@/stores/user-store";
-import { getPetByIdAndUpdateStore } from "@/dataManager/petDataManager";
 import { Logout } from "@/services/firebase/auth/auth_service";
 
 interface HomePageProps {
