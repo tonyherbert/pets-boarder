@@ -1,97 +1,41 @@
-"use client";
-import { useEffect } from "react";
-import usePetStore from "@/stores/pet-store";
-import "./page.scss";
-import LineChart from "@/components/lineChart/LineChart";
-import Button from "@/components/button/Button";
-import { FaSyringe, FaWeight } from "react-icons/fa";
-import { useMainStore } from "@/stores/main-store";
-import useWeightStore from "@/stores/weight-store";
-import { getCurrentUserId } from "@/services/user/user_service";
-import { SimplifyToWeigthsArray } from "@/utils/convert";
-import CreateVaccineForm from "@/components/forms/pet/CreateVaccineForm";
-import { fetchAndSetVaccines } from "@/dataManager/vaccineDataManager";
-import useVaccineStore from "@/stores/vaccine-store";
-import TableVaccines from "./components/VaccinesTable";
-import Paper from '@mui/material/Paper';
-import CreateWeightForm from "@/components/forms/pet/CreateWeightForm";
+'use client';
+import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import SizeTabContent from './components/tabs/SizeTabContent';
+import VaccinesTabContent from './components/tabs/VaccinesTabContent';
+import WeightTabContent from './components/tabs/WeightTabContent';
 
+interface PageDetailsPetProps {
+  params: { id: string };
+}
 
+export default function PageDetailsPet({ params }: PageDetailsPetProps) {
+  const [activeTab, setActiveTab] = useState('weight');
 
-const PetDetail = ({ params }: { params: { id: string } }) => {
-  const { selectedPet } = usePetStore();  
-  const { weights, loading, actions } = useWeightStore();
-  const { vaccines } = useVaccineStore();
-  const { openModal } = useMainStore().actions;
-  
-
-  // useEffect(() => {
-  //   const fetchPet = async () => {
-  //     try {
-  //       getPetByIdAndUpdateStore(params.id);
-  //     } catch (error) {
-  //       console.error("Error fetching pet:", error);
-  //     }
-  //   };
-
-  //   fetchPet();
-  // }, [params.id]);
-
-  useEffect(() => {
-    const fetchPetWeights = async () => {
-      try {
-        actions.fetchWeights(params.id);
-      } catch (error) {
-        console.error("Error fetching pet:", error);
-      }
-    };
-
-    fetchPetWeights();
-  }, [params.id]);
-
-    useEffect(() => {
-    const fetchPetVaccines = async () => {
-      try {
-        const userId = getCurrentUserId();
-        fetchAndSetVaccines(userId!, params.id);
-      } catch (error) {
-        console.error("Error fetching pet:", error);
-      }
-    };
-
-    fetchPetVaccines();
-  }, [params.id]);
-
-  if (!selectedPet) {
-    return <div>Loading...</div>;
-  }
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
   return (
-    <div className="container">
-    <div className="weight">
-      <Button
-          className="add-weight-button"
-          onClick={() => openModal(<CreateWeightForm petId={selectedPet!.id} />)}
-          icon={<FaWeight />}
-        >
-          Add weight
-        </Button>  <Paper>
-       <LineChart data={SimplifyToWeigthsArray(weights)} title="weight curve monitoring" loading={loading} />
-    </Paper>
-          
-    </div>
-<div className="vaccines">
-    <Button
-          className="add-weight-button"
-          onClick={() => openModal(<CreateVaccineForm petId={selectedPet!.id} />)}
-          icon={<FaSyringe />}
-        >
-          Add vaccine
-        </Button> <TableVaccines rows={vaccines}/>
-  {" "}</div>
-
-    </div>
+    <Tabs
+      defaultValue="weight"
+      className="w-screen"
+      onValueChange={handleTabChange}
+    >
+      <TabsList className="grid w-full grid-cols-3">
+        <TabsTrigger value="weight">Weight</TabsTrigger>
+        <TabsTrigger value="vaccines">Vaccines</TabsTrigger>
+        <TabsTrigger value="size">Size</TabsTrigger>
+      </TabsList>
+      <TabsContent value="weight">
+        {activeTab === 'weight' && <WeightTabContent petId={params.id} />}
+      </TabsContent>
+      <TabsContent value="vaccines">
+        {activeTab === 'vaccines' && 'waiting vaccines here...'}
+      </TabsContent>
+      <TabsContent value="size">
+        {activeTab === 'size' && <SizeTabContent />}
+      </TabsContent>
+    </Tabs>
   );
-};
-
-export default PetDetail;
+}

@@ -1,5 +1,5 @@
-export type WeightForm = {
-    weight: number;
+export type Weight = {
+    value: number;
     unit: string;
     date: string;
 };
