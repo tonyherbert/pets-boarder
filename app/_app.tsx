@@ -1,24 +1,22 @@
 import type { AppProps } from "next/app";
 
-import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { fontSans, fontMono } from "@/configuration/fonts";
 import { useRouter } from "next/router";
 import "@/styles/globals.css";
+import { useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
+    useEffect(() => {
+      console.log("Current route:", router.pathname);
+      document.body.classList.add('dark');
+  }, []);
+
   return (
-    <NextUIProvider navigate={router.push}>
-      <NextThemesProvider>
+      <NextThemesProvider >
         <Component {...pageProps} />
       </NextThemesProvider>
-    </NextUIProvider>
   );
 }
 
-export const fonts = {
-  sans: fontSans.style.fontFamily,
-  mono: fontMono.style.fontFamily,
-};

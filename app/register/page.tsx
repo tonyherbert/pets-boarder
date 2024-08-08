@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signUp } from "@/services/auth/auth_service";
+import { signUp } from "@/services/firebase/auth/auth_service";
 
 export default function Register() {
   const [email, setEmail] = useState("");

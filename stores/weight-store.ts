@@ -1,9 +1,9 @@
 import {create} from 'zustand';
-import { WeightForm, WeightFromFirestore } from '@/types/Weight';
+import { Weight, WeightForm } from '@/types/Weight';
 import { endpoints, methods } from '@/config/api-config';
 
 interface WeightStoreState {
-  weights: WeightFromFirestore[];
+  weights: Weight[];
   loading: boolean;
   error: string | null;
   actions: {
@@ -17,8 +17,8 @@ const useWeightStore = create<WeightStoreState>((set, get) => ({
   loading: false,
   error: null,
   actions: {
-    setWeights: (weights: WeightFromFirestore[]) => set({ weights }),
-    fetchWeights: async (petId) => {
+    setWeights: (weights: Weight[]) => set({ weights }),
+    fetchWeights: async (petId) => {      
       set({ loading: true, error: null });
       try {
         const response = await fetch(endpoints.weights.list, {
@@ -33,7 +33,7 @@ const useWeightStore = create<WeightStoreState>((set, get) => ({
           throw new Error(`Error fetching weights: ${response.statusText}`);
         }
 
-        const weights: WeightFromFirestore[] = await response.json();
+        const weights: Weight[] = await response.json();        
         set({ weights });
       } catch (error) {
         set({ error: error instanceof Error ? error.message : String(error) });

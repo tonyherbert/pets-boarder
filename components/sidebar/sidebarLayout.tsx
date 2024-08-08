@@ -1,119 +1,136 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  menuClasses,
-} from "react-pro-sidebar";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { CiSettings } from "react-icons/ci";
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaBars } from "react-icons/fa";
-import { PiDogBold } from "react-icons/pi";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import usePetStore from "@/stores/pet-store";
-import Button from "../button/Button";
-import { useRouter } from "next/navigation";
-import "./sidebar.scss"
-import { Logout } from "@/services/firebase/auth/auth_service";
+  IconArrowLeft,
+  IconBrandTabler,
+  IconSettings,
+  IconUserBolt,
+} from "@tabler/icons-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-const SidebarLayout = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const [toggled, setToggled] = useState(false);
-  const isSmallDevice = useMediaQuery(600);
-
-  const { pets} = usePetStore();
-
-  const handleToggleSidebar = () => {    
-    setToggled(!toggled);
-    setCollapsed(false);
-  };
- const router = useRouter();
-  async function handleLogout() {
-    const result = await Logout();
-    if (!result.error) router.push("/login");
-  }
-
-
-  useEffect(() => {
-    if (!isSmallDevice) {
-      setToggled(false);
-    }
-  }, [isSmallDevice]);
-
-  const hoverStyles = {
-    ["." + menuClasses.button]: {
-      "&:hover": {
-        color: "#b6c8d9",
-        backgroundColor: "#445d76 !important",
-      },
+export default function SidebarLayout() {
+  const links = [
+    {
+      label: "Dashboard",
+      href: "#",
+      icon: (
+        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
     },
-    ["." + menuClasses.subMenuContent]: {
-      backgroundColor: "transparent !important",
-
-      "&:hover": {
-        color: "#b6c8d9",
-        backgroundColor: "#445d76 !important",
-      },
+    {
+      label: "Profile",
+      href: "#",
+      icon: (
+        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
     },
-  };
-
+    {
+      label: "Settings",
+      href: "#",
+      icon: (
+        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Logout",
+      href: "#",
+      icon: (
+        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+  ];
+  const [open, setOpen] = useState(false);
   return (
-    <React.Fragment>
-      {isSmallDevice && (
-        <button
-          className="mb-auto mt-5 ml-5 absolute z-10"
-          onClick={(handleToggleSidebar)}
-        >
-          <FaBars />
-        </button>
-      )}
-      <Sidebar
-        collapsed={collapsed}
-        toggled={toggled}
-        onBackdropClick={() => setToggled(false)}
-        customBreakPoint="600px"
-        backgroundColor="#282828"
-      >
-        <header className="flex items-center justify-center justify-evenly p-4">
-          {!isSmallDevice && (
-            <React.Fragment>
-              {collapsed ? (
-                <FaAngleDoubleRight
-                  className="cursor-pointer"
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              ) : (
-                <React.Fragment>
-                  <span>Pets Boarder</span>
-                  <FaAngleDoubleLeft
-                    className="cursor-pointer "
-                    onClick={() => setCollapsed(!collapsed)}
+ <>
+      <Sidebar open={open} setOpen={setOpen} animate={false}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <>
+              <Logo />
+            </>
+            <div className="mt-8 flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <SidebarLink
+              link={{
+                label: "Manu Arora",
+                href: "#",
+                icon: (
+                  <Image
+                    src=""
+                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    width={50}
+                    height={50}
+                    alt="Avatar"
                   />
-                  <hr />
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          )}
-        </header>
-        <Menu>
-          <MenuItem rootStyles={hoverStyles} icon={<AiOutlineDashboard />}>
-            Dashboard
-          </MenuItem>
-          
-                <MenuItem href={`/application/pets`} rootStyles={hoverStyles} icon={<PiDogBold />}>
-                My Pets
-                </MenuItem>
-          <MenuItem rootStyles={hoverStyles} icon={<CiSettings />}>
-            Settings
-          </MenuItem>
-        </Menu>
-        <footer className="footer">        
-          <Button onClick={handleLogout}>Logout</Button>
-        </footer>
+                ),
+              }}
+            />
+          </div>
+        </SidebarBody>
       </Sidebar>
-    </React.Fragment>
+      <Dashboard />
+    </>
+  );
+}
+export const Logo = () => {
+  return (
+    <Link
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-medium text-black dark:text-white whitespace-pre"
+      >
+        Acet Labs
+      </motion.span>
+    </Link>
+  );
+};
+export const LogoIcon = () => {
+  return (
+    <Link
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    </Link>
   );
 };
 
-export default SidebarLayout;
+// Dummy dashboard component with content
+const Dashboard = () => {
+  return (
+    <div className="flex flex-1">
+      <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+        <div className="flex gap-2">
+          {[...new Array(4)].map((i) => (
+            <div
+              key={"first" + i}
+              className="h-20 w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
+            ></div>
+          ))}
+        </div>
+        <div className="flex gap-2 flex-1">
+          {[...new Array(2)].map((i) => (
+            <div
+              key={"second" + i}
+              className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
+            ></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

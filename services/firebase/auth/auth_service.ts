@@ -3,7 +3,7 @@ import { createUserDocument } from "@/services/user/user_service";
 import useUserStore                                                                     from "@/stores/user-store";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export  async function signUp(email: string, password: string) {
   let result, error;
