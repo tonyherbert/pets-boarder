@@ -28,7 +28,6 @@ import { calculatePercentageDifference } from '@/utils/convert';
 
 interface LineChartProps {
   data: Weight[];
-  title?: string;
   loading?: boolean;
 }
 

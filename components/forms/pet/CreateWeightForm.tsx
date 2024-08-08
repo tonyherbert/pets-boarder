@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useMainStore } from '@/stores/main-store';
-import { WeightForm } from '@/types/Weight';
 import useWeightStore from '@/stores/weight-store';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,9 +26,19 @@ import { format, parse } from 'date-fns';
 
 interface CreateWeightFormProps {
   petId: string;
+  loading: boolean;
 }
 
-const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
+interface WeightForm {
+  weight: string; // Le poids est représenté comme une chaîne de caractères
+  unit: 'kgs' | 'lbs'; // L'unité est soit 'kgs' ou 'lbs'
+  date?: string; // La date est optionnelle et peut être un objet Date ou undefined
+}
+
+const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
+  petId,
+  loading,
+}) => {
   const { closeModal } = useMainStore().actions;
   const { actions } = useWeightStore();
   const {
@@ -37,16 +46,14 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<WeightForm>({
     defaultValues: {
-      unit: 'kgs', // Set a default unit
-      date: undefined, // Initialize date as undefined
+      unit: 'kgs',
+      date: undefined,
     },
   });
 
   const onSubmit: SubmitHandler<WeightForm> = async (data) => {
-    // Format the date as "YYYY/MM/dd"
     if (data.date) {
       data.date = format(new Date(data.date), 'yyyy/MM/dd');
     }
@@ -57,9 +64,10 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
 
   return (
     <form
-      className="flex flex-col gap-4 w-full"
+      className="flex flex-col gap-4 w-full p-6 max-w-md mx-auto bg-card rounded-lg shadow-lg"
       onSubmit={handleSubmit(onSubmit)}
     >
+      <Label className="mb-1">Add new weight</Label>
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex flex-col flex-grow w-full md:w-1/2">
           <Label htmlFor="weight" className="mb-1">
@@ -72,7 +80,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
             className="w-full"
           />
           {errors.weight && (
-            <span className="text-red-500 text-sm">
+            <span className="text-negative text-sm">
               {errors.weight.message}
             </span>
           )}
@@ -102,7 +110,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
             )}
           />
           {errors.unit && (
-            <span className="text-red-500 text-sm">{errors.unit.message}</span>
+            <span className="text-negative text-sm">{errors.unit.message}</span>
           )}
         </div>
       </div>
@@ -142,12 +150,12 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({ petId }) => {
           )}
         />
         {errors.date && (
-          <span className="text-red-500 text-sm">{errors.date.message}</span>
+          <span className="text-negative text-sm">{errors.date.message}</span>
         )}
       </div>
 
       <div className="flex flex-col justify-center w-full mt-4">
-        <Button type="submit" className="w-full md:w-auto">
+        <Button type="submit" className="btn-primary">
           Add Weight
         </Button>
       </div>

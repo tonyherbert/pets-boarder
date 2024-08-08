@@ -67,3 +67,49 @@ export function calculatePercentageDifference<T>(
     percentageDifference
   };
 }
+
+
+/**
+ * Calcule la différence en pourcentage entre les valeurs à deux dates spécifiques.
+ * @param {Array} items - Le tableau d'objets à analyser.
+ * @param {string} startDate - La date de début (au format YYYY-MM-DD).
+ * @param {string} endDate - La date de fin (au format YYYY-MM-DD).
+ * @param {string} dateProperty - Le nom de la propriété contenant la date.
+ * @param {string} valueProperty - Le nom de la propriété contenant la valeur à comparer.
+ * @returns {object} - Un objet contenant la date de début, la date de fin, et la différence en pourcentage des valeurs.
+ */
+export function calculatePercentageDifferenceBetweenDates<T>(
+  items: T[],
+  startDate: string,
+  endDate: string,
+  dateProperty: keyof T,
+  valueProperty: keyof T
+): { startDate: string; endDate: string; percentageDifference: number } | undefined {
+  if (items.length === 0) return;
+
+  // Trouver les objets correspondant aux dates de début et de fin
+  const startItem = items.find(item => (item[dateProperty] as unknown as string) === startDate);
+  const endItem = items.find(item => (item[dateProperty] as unknown as string) === endDate);
+
+  if (!startItem || !endItem) {
+    throw new Error('Les dates spécifiées ne sont pas toutes présentes dans les données.');
+  }
+
+  // Obtenir les valeurs des objets
+  const valueStart = (startItem[valueProperty] as unknown as number);
+  const valueEnd = (endItem[valueProperty] as unknown as number);
+
+  if (valueStart === 0) {
+    throw new Error('La valeur de départ (poids initial) ne peut pas être zéro pour calculer une variation en pourcentage.');
+  }
+
+  // Calculer la différence en pourcentage
+  const valueDifference = valueEnd - valueStart;
+  const percentageDifference = (valueDifference / valueStart) * 100;
+
+  return {
+    startDate,
+    endDate,
+    percentageDifference
+  };
+}

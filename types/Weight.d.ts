@@ -19,3 +19,9 @@ export interface WeightChart {
   name: string;
   unit: string;
 }
+
+export interface WeightForm {
+  weight: string; // Le poids est représenté comme une chaîne de caractères
+  unit: 'kgs' | 'lbs'; // L'unité est soit 'kgs' ou 'lbs'
+  date?: string; // La date est optionnelle et peut être un objet Date ou undefined
+}

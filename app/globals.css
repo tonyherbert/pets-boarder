@@ -29,6 +29,8 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --success: 120 60% 50%; /* Couleur de succès */
+    --negative: 0 100% 60%; /* Couleur négative (rouge) */
   }
 
   .dark {
@@ -56,6 +58,8 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --success: 120 60% 40%; /* Couleur de succès pour le mode sombre */
+    --negative: 0 100% 40%; /* Couleur négative pour le mode sombre */
   }
 }
 
@@ -65,5 +69,26 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Utilisation des couleurs personnalisées */
+@layer components {
+  .btn-primary {
+    @apply mt-4 bg-primary text-primary-foreground rounded-md 
+         hover:bg-primary-foreground hover:text-primary 
+         focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+  .text-success {
+    color: hsl(var(--success));
+  }
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  .text-negative {
+    color: hsl(var(--negative));
+  }
+  .bg-negative {
+    background-color: hsl(var(--negative));
   }
 }
