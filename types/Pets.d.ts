@@ -19,7 +19,7 @@ export type Pet = {
   animalType: string;
   breed: string;
   birthDate: string;
-  ownerId?: string;
+  ownerId: string;
   gender: string;
 };
 
