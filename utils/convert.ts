@@ -1,6 +1,6 @@
-import { Weight, WeightChart, WeightFromFirestore } from "@/types/Weight";
 import moment from 'moment'; // Importez Moment.js
-
+import { format } from 'date-fns';
+import { Timestamp } from "firebase/firestore";
 
 export function addMonthsToDate(dateString: string, monthsToAdd: number): string {
   const momentDate = moment(dateString); // Crée un objet Moment à partir de la date
@@ -112,4 +112,25 @@ export function calculatePercentageDifferenceBetweenDates<T>(
     endDate,
     percentageDifference
   };
+}
+
+
+
+
+/**
+ * Format a date to a specific string format.
+ * @param date - The date to format, can be a string, Date object, or Timestamp.
+ * @param dateFormat - The format string to use, default is 'yyyy-MM-dd'.
+ * @returns The formatted date string.
+ */
+export function formatDate(date: string | Date | Timestamp, dateFormat: string = 'yyyy-MM-dd'): string {
+  // Convert Timestamp to Date if necessary
+  const dateObj = date instanceof Timestamp ? date.toDate() : new Date(date);
+
+  // Handle invalid dates
+  if (isNaN(dateObj.getTime())) {
+    return '';
+  }
+
+  return format(dateObj, dateFormat);
 }

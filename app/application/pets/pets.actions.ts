@@ -6,6 +6,7 @@ import { fetchTokens } from "@/utils/tokens";
 import { createPetInFirebase, getPetsFromFirebase } from "@/services/firebase/pet/pet_service";
 import { Pet } from "@/types/Pets";
 import { petSchema } from "@/schemas/schemas";
+import { Timestamp } from "firebase/firestore";
 
 
 
@@ -30,31 +31,32 @@ const extendedPetSchema = petSchema.extend({
   ownerId: z.string(),     // Ajoute l'ID du propriétaire
 });
 
-type GetPetsResponse = [Pet[], null] | [[], any];
-
-export const getPets = async (): Promise<GetPetsResponse> => {
+export const getPets = async (): Promise<[Pet[], Error | null]> => {
   try {
     const { userId } = await fetchTokens();
     if (!userId) {
-      throw new Error("User is not authenticated");
+      throw new Error('User is not authenticated');
     }
-
-    // Récupérer les animaux de Firebase
     const pets = await getPetsFromFirebase(userId);
 
-    // Valider et transformer les données récupérées
     const validatedPets = pets.map((pet) => {
       try {
-        return extendedPetSchema.parse(pet);
+        const convertedPet = {
+          ...pet,
+          birthDate: pet.birthDate instanceof Timestamp ? pet.birthDate.toDate() : pet.birthDate,
+        };
+
+        return extendedPetSchema.parse(convertedPet);
       } catch (error) {
-        console.error("Validation failed for pet:", pet, error);
+        console.error('Validation failed for pet:', pet, error);
         return null; 
       }
-    }).filter((pet): pet is Pet => pet !== null); // Filtrer les éléments invalides
+    }).filter((pet): pet is Pet => pet !== null); 
 
     return [validatedPets, null];
   } catch (error) {
-    console.error("Error fetching pets:", error);
-    return [[], error];
+    const typedError = error instanceof Error ? error : new Error('An unknown error occurred');
+    console.error('Error fetching pets:', typedError);
+    return [[], typedError];
   }
 };

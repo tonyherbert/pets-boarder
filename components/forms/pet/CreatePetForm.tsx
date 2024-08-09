@@ -25,16 +25,9 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { createPet } from '@/app/application/pets/pets.actions';
 import { useRouter } from 'next/navigation';
-
-interface PetForm {
-  name: string;
-  chipNumber: string;
-  lof: string;
-  animalType: string;
-  breed: string;
-  birthDate: string;
-  gender: 'Male' | 'Female';
-}
+import { petSchema } from '@/schemas/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 const CreatePetForm: React.FC = () => {
   const { closeModal } = useMainStore().actions;
@@ -45,17 +38,20 @@ const CreatePetForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PetForm>({
+  } = useForm<z.infer<typeof petSchema>>({
+    resolver: zodResolver(petSchema),
     defaultValues: {
       gender: 'Male',
       birthDate: undefined,
+      animalType: '',
+      breed: '',
+      chipNumber: '',
+      lof: '',
+      name: '',
     },
   });
 
-  const onSubmit: SubmitHandler<PetForm> = async (data) => {
-    if (data.birthDate) {
-      data.birthDate = format(new Date(data.birthDate), 'yyyy-MM-dd');
-    }
+  const onSubmit: SubmitHandler<z.infer<typeof petSchema>> = async (data) => {
     const [result, error] = await createPet({
       name: data.name,
       chipNumber: data.chipNumber,

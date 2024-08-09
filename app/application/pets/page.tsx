@@ -6,9 +6,9 @@ export default async function PetsPage() {
 
   if (error) {
     console.error('Error fetching pets:', error);
-    // Gérez l'erreur, par exemple en affichant un message d'erreur
     return <div>Error loading pets</div>;
   }
+  console.log('Pets:', pets);
 
   // Passez les données de pets à PetsClientComponent
   return <PetsClientComponent initialPets={pets} />;

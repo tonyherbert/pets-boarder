@@ -1,6 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { Pet } from '@/types/Pets';
+import { formatDate } from '@/utils/convert';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -53,7 +54,9 @@ export const HoverEffect = ({
                   {pet.name} {pet.gender === 'male' ? '♂' : '♀'}
                 </div>
                 <div className="text-sm text-zinc-400">{pet.race}</div>
-                <div className="text-xs text-zinc-300">{pet.birthDate}</div>
+                <div className="text-xs text-zinc-300">
+                  {formatDate(pet.birthDate, 'yyyy-MM-dd')}
+                </div>
               </CardHeader>
               <hr className="border-zinc-200 mt-2" />
               <CardDescription>
