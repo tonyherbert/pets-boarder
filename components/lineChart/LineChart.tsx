@@ -24,10 +24,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '../ui/chart';
-import { calculatePercentageDifference } from '@/utils/convert';
+import { calculatePercentageDifference, formatDate } from '@/utils/convert';
 
 interface LineChartProps {
-  data: Weight[];
+  data: any;
   loading?: boolean;
 }
 
@@ -38,35 +38,30 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const LineChartComponent: React.FC<LineChartProps> = ({
-  data,
-  title,
-  loading,
-}) => {
+const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
   const formatTooltip = (value: number, name: string, props: any) => {
     const unit = props.payload.unit;
     return [`${value} ${unit}`];
   };
-  console.log(data);
+  console.log(data[0]);
 
-  const progressWeight = calculatePercentageDifference(data, 'date', 'value');
+  const progressWeight = calculatePercentageDifference(data, 'date', 'weight');
 
   const textResultProgressWeight = progressWeight
     ? `
-  Weight increased from ${progressWeight.oldestDate} (${data.find((w) => w.date === progressWeight.oldestDate)?.value} kg) 
-  to ${progressWeight.mostRecentDate} (${data.find((w) => w.date === progressWeight.mostRecentDate)?.value} kg), 
+  Weight increased from ${formatDate(progressWeight.oldestDate)} (${data!.find((w) => formatDate(w.date) === formatDate(progressWeight.oldestDate))?.weight} kg) 
+  to ${formatDate(progressWeight.mostRecentDate)} (${data!.find((w) => formatDate(w.date) === formatDate(progressWeight.mostRecentDate))?.weight} kg), 
   a ${progressWeight.percentageDifference.toFixed(2)}% ${progressWeight.percentageDifference > 0 ? 'increase' : 'decrease'}.
   `
     : 'No weight data available to calculate progress.';
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title || 'Weight trend graph'}</CardTitle>
+        <CardTitle>{'Weight trend graph'}</CardTitle>
         <CardDescription>Monitoring</CardDescription>
       </CardHeader>
       <CardContent>
-        {data.length > 0 ? (
+        {data && data.length > 0 ? (
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height={300}>
               <RechartsLineChart
@@ -97,7 +92,7 @@ const LineChartComponent: React.FC<LineChartProps> = ({
                 />
                 <Line
                   type="monotone"
-                  dataKey="value"
+                  dataKey="weight"
                   stroke="hsl(var(--chart-1))"
                   strokeWidth={2}
                   dot={false}

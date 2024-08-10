@@ -7,6 +7,7 @@ import { createPetInFirebase, getPetsFromFirebase } from "@/services/firebase/pe
 import { Pet } from "@/types/Pets";
 import { petSchema } from "@/schemas/schemas";
 import { Timestamp } from "firebase/firestore";
+import { convertTimestampsToDates } from "@/utils/convert";
 
 
 
@@ -39,19 +40,8 @@ export const getPets = async (): Promise<[Pet[], Error | null]> => {
     }
     const pets = await getPetsFromFirebase(userId);
 
-    const validatedPets = pets.map((pet) => {
-      try {
-        const convertedPet = {
-          ...pet,
-          birthDate: pet.birthDate instanceof Timestamp ? pet.birthDate.toDate() : pet.birthDate,
-        };
+       const validatedPets = convertTimestampsToDates(pets, ['birthDate']);
 
-        return extendedPetSchema.parse(convertedPet);
-      } catch (error) {
-        console.error('Validation failed for pet:', pet, error);
-        return null; 
-      }
-    }).filter((pet): pet is Pet => pet !== null); 
 
     return [validatedPets, null];
   } catch (error) {

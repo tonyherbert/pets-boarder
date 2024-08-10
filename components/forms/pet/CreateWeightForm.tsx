@@ -22,44 +22,59 @@ import {
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
-import { format, parse } from 'date-fns';
+import { format, isToday } from 'date-fns';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { weightSchema } from '@/schemas/schemas';
+import { createWeightAction } from '@/app/application/pets/[id]/weight.action';
+import { useRouter } from 'next/navigation';
+
+type WeightForm = z.infer<typeof weightSchema>;
 
 interface CreateWeightFormProps {
   petId: string;
   loading: boolean;
 }
 
-interface WeightForm {
-  weight: string; // Le poids est représenté comme une chaîne de caractères
-  unit: 'kgs' | 'lbs'; // L'unité est soit 'kgs' ou 'lbs'
-  date?: string; // La date est optionnelle et peut être un objet Date ou undefined
-}
-
 const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
   petId,
   loading,
 }) => {
-  const { closeModal } = useMainStore().actions;
   const { actions } = useWeightStore();
+  const router = useRouter();
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<WeightForm>({
+    setValue,
+  } = useForm<z.infer<typeof weightSchema>>({
+    resolver: zodResolver(weightSchema),
+    mode: 'onSubmit',
     defaultValues: {
-      unit: 'kgs',
       date: undefined,
+      unit: 'kgs',
+      weight: '0',
     },
   });
 
-  const onSubmit: SubmitHandler<WeightForm> = async (data) => {
-    if (data.date) {
-      data.date = format(new Date(data.date), 'yyyy/MM/dd');
-    }
+  setValue('petId', petId);
+  const onSubmit: SubmitHandler<z.infer<typeof weightSchema>> = async (
+    data
+  ) => {
+    const [result, error] = await createWeightAction({
+      petId: petId,
+      weight: data.weight,
+      unit: data.unit,
+      date: data.date,
+    });
 
-    actions.createWeight(data, petId);
-    closeModal();
+    if (error) {
+      console.error('Failed to create weight:', error);
+    } else {
+      console.log('Weight created successfully with ID:', result);
+    }
+    router.refresh();
   };
 
   return (
@@ -76,7 +91,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
           <Input
             type="text"
             id="weight"
-            {...register('weight', { required: 'This field is required' })}
+            {...register('weight')}
             className="w-full"
           />
           {errors.weight && (
@@ -93,9 +108,14 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
           <Controller
             name="unit"
             control={control}
-            rules={{ required: 'This field is required' }}
             render={({ field }) => (
-              <Select {...field} onValueChange={field.onChange}>
+              <Select
+                {...field}
+                onValueChange={field.onChange}
+                {...register('unit', {
+                  required: 'This field is required',
+                })}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
@@ -119,9 +139,12 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
         <Controller
           name="date"
           control={control}
-          rules={{ required: 'This field is required' }}
           render={({ field }) => (
-            <Popover>
+            <Popover
+              {...register('date', {
+                required: 'This field is required',
+              })}
+            >
               <PopoverTrigger asChild>
                 <Button
                   variant={'outline'}
@@ -156,7 +179,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
 
       <div className="flex flex-col justify-center w-full mt-4">
         <Button type="submit" className="btn-primary">
-          Add Weight
+          Add
         </Button>
       </div>
     </form>

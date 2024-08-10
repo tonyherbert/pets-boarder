@@ -47,7 +47,7 @@ const WeightDifferenceCalculator: React.FC = () => {
         data.startDate,
         data.endDate,
         'date',
-        'value'
+        'weight'
       );
       setPercentageDifference(result?.percentageDifference);
     } catch (error) {

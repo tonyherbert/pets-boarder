@@ -1,17 +1,15 @@
 export type Weight = {
-    value: number;
-    unit: string;
-    date: string;
-};
-
-export type WeightFromFirestore = {
-    createdAt: string;
+       createdAt: string;
     id: string;
     ownerId: string;
     petId: string;
-    weight: number;
+    weight: string;
     unit: string;
-    date: string;
+    date: date;
+};
+
+export type WeightFromFirestore = {
+ 
 };
 
 export interface WeightChart {

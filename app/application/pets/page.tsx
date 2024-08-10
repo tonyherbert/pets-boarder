@@ -8,8 +8,6 @@ export default async function PetsPage() {
     console.error('Error fetching pets:', error);
     return <div>Error loading pets</div>;
   }
-  console.log('Pets:', pets);
 
-  // Passez les données de pets à PetsClientComponent
   return <PetsClientComponent initialPets={pets} />;
 }
