@@ -6,20 +6,18 @@ import { fetchTokens } from "@/utils/tokens";
 import { createPetInFirebase, getPetsFromFirebase } from "@/services/firebase/pet/pet_service";
 import { Pet } from "@/types/Pets";
 import { petSchema } from "@/schemas/schemas";
-import { Timestamp } from "firebase/firestore";
 import { convertTimestampsToDates } from "@/utils/convert";
+import { getAuthenticatedUserId } from "@/utils/auth";
 
 
 
 export const createPet = action.input(petSchema).handler(async ({ input }) => {
   try {
-    const { userId } = await fetchTokens();
-    if (!userId) {
-      throw new Error("User is not authenticated");
-    }
-    const petId = await createPetInFirebase(userId, {
+      const userId = await getAuthenticatedUserId();
+      const petId = await createPetInFirebase(userId, {
       ...input,
-    });
+      });
+      
     return [petId, null];
   } catch (error) {
     console.error("Error creating pet:", error);
@@ -28,25 +26,20 @@ export const createPet = action.input(petSchema).handler(async ({ input }) => {
 });
 
 const extendedPetSchema = petSchema.extend({
-  id: z.string(),          // Ajoute l'ID de l'animal
-  ownerId: z.string(),     // Ajoute l'ID du propriétaire
+  id: z.string(),          
+  ownerId: z.string(),
 });
 
-export const getPets = async (): Promise<[Pet[], Error | null]> => {
+
+export const getPetsAction = action.handler(async () => {
   try {
-    const { userId } = await fetchTokens();
-    if (!userId) {
-      throw new Error('User is not authenticated');
-    }
-    const pets = await getPetsFromFirebase(userId);
-
-       const validatedPets = convertTimestampsToDates(pets, ['birthDate']);
-
-
-    return [validatedPets, null];
+       const userId = await getAuthenticatedUserId();
+       const resultFromDb = await getPetsFromFirebase(userId);
+       const formattedPets = convertTimestampsToDates(resultFromDb, ['birthDate']);
+  
+    return formattedPets;
   } catch (error) {
-    const typedError = error instanceof Error ? error : new Error('An unknown error occurred');
-    console.error('Error fetching pets:', typedError);
-    return [[], typedError];
+    console.error("Error fetching weights:", error);
+    return [];
   }
-};
+});

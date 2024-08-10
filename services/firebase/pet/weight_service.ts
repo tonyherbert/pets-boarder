@@ -1,4 +1,4 @@
-import {  WeightForm, WeightFromFirestore } from "@/types/Weight";
+import {  Weight, WeightForm, WeightFromFirestore } from "@/types/Weight";
 import { db } from "../../../firebase/firebase";
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { weightSchema } from "@/schemas/schemas";
@@ -18,7 +18,7 @@ export async function createWeightInFirebase(
 export async function getWeightsByPetFromFirebase(
   userId: string,
   petId: string
-): Promise<z.infer<typeof weightSchema>[]> {
+): Promise<Weight[]> {
   const weightsCollection = collection(db, "weight");
   const q = query(
     weightsCollection,

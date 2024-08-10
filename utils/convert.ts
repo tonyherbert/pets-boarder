@@ -16,9 +16,7 @@ export function addMonthsToDate(dateString: string, monthsToAdd: number): string
  * @returns {T[]} - Le tableau trié d'objets, du plus ancien au plus récent.
  * @throws {Error} - Si une date invalide est trouvée dans les objets ou si un objet n'a pas la propriété de date.
  */
-export function sortByDate<T>(items: T[], dateProperty: keyof T): T[] {
-  console.log("////////////////////////", items);
-  
+export function sortByDate<T>(items: T[], dateProperty: keyof T): T[] {  
   return items.sort((a, b) => {
     // Vérifiez que les objets ne sont pas null ou undefined
     if (a == null || b == null) {
@@ -155,10 +153,6 @@ export function calculatePercentageDifferenceBetweenDates<T>(
 }
 
 
-
-
-
-
 /**
  * Format a date to a specific string format.
  * @param date - The date to format, can be a string, Date object, or Timestamp.
@@ -202,7 +196,10 @@ export function convertTimestampsToDates<T extends TimestampConvertible>(
         const value = convertedItem[field];
         if (isTimestamp(value)) {
           // On est sûr que value est un Timestamp ici
-          convertedItem[field] = value.toDate() as T[keyof T];
+          const date = value.toDate();
+          // Réinitialiser l'heure à minuit
+          date.setUTCHours(0, 0, 0, 0);
+          convertedItem[field] = date as T[keyof T];
         }
       });
 

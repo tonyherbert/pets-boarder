@@ -4,7 +4,6 @@ import React from 'react';
 import CreateWeightForm from '@/components/forms/pet/CreateWeightForm';
 import LineChartComponent from '@/components/lineChart/LineChart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import WeightDifferenceCalculator from '../WeightDifferenceCalculator';
 import {
   Accordion,
   AccordionItem,
@@ -12,10 +11,11 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { Weight } from '@/types/Weight';
+import WeightDifferenceCalculator from '../../WeightDifferenceCalculator';
 
 interface WeightTabContentProps {
   petId: string;
-  weights: Array<Weight> | null; // Update with the actual type of the weight data
+  weights: Weight[];
   error: any;
 }
 
@@ -49,7 +49,7 @@ export default function WeightTabContent({
             <AccordionItem value="weight-difference-calculator">
               <AccordionTrigger>Weight Difference Calculator</AccordionTrigger>
               <AccordionContent>
-                <WeightDifferenceCalculator />
+                <WeightDifferenceCalculator weights={weights} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

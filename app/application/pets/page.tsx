@@ -1,8 +1,8 @@
-import { getPets } from './pets.actions'; // Assurez-vous que le chemin est correct
-import PetsClientComponent from './PetsClientComponent'; // Assurez-vous que le chemin est correct
+import { getPetsAction } from './pets.actions';
+import PetsClientComponent from './PetsClientComponent';
 
-export default async function PetsPage() {
-  const [pets, error] = await getPets();
+export default async function Page() {
+  const [pets, error] = await getPetsAction();
 
   if (error) {
     console.error('Error fetching pets:', error);

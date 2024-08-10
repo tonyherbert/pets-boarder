@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const petIdSchema = z.object({
+  petId: z.string().min(1, 'Pet ID is required'), 
+});
+
 export const petSchema = z.object({
   animalType: z.string(),       // Type d'animal, par exemple "dog"
   birthDate: z.date().or(z.string().refine(val => !isNaN(Date.parse(val)), {
@@ -20,5 +24,4 @@ export const weightSchema = z.object({
    petId: z.string(),
    unit: z.string(),
    weight: z.string(),
-
 });

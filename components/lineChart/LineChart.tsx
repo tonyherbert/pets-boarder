@@ -43,8 +43,6 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
     const unit = props.payload.unit;
     return [`${value} ${unit}`];
   };
-  console.log(data[0]);
-
   const progressWeight = calculatePercentageDifference(data, 'date', 'weight');
 
   const textResultProgressWeight = progressWeight

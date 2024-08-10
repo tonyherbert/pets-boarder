@@ -1,5 +1,5 @@
 export type Weight = {
-       createdAt: string;
+    createdAt: string;
     id: string;
     ownerId: string;
     petId: string;
