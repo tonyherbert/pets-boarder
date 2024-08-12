@@ -15,13 +15,13 @@ import { Pet, PetForm } from "@/types/Pets";
 
 
 
-export async function createPet(userId: string, petDetails: PetForm) {
+export async function createPetInFirebase(userId: string, petDetails: any) {
   const  animalsCollection = collection(db, `pets`);
   const  animalDocRef      = await addDoc(animalsCollection, {...petDetails, ownerId: userId});
   return animalDocRef.id;
 }
 
-export async function getPetsByUser(userId: string) {
+export async function getPetsFromFirebase(userId: string) {
   const petsCollection = collection(db,"pets");  
   const q              = query(petsCollection, where("ownerId", "==", userId));
   const querySnapshot  = await getDocs(q);

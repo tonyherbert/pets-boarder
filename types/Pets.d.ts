@@ -1,14 +1,4 @@
-export type PetForm = {
-  id: string;
-  name: string;
-  race: string;
-  chipNumber: string;
-  lof: string;
-  animalType: string;
-  breed: string;
-  birthDate: string;
-  gender: string;
-};
+
 
 export type Pet = {
   id: string;
@@ -18,8 +8,8 @@ export type Pet = {
   lof: string;
   animalType: string;
   breed: string;
-  birthDate: string;
-  ownerId?: string;
+  birthDate: date;
+  ownerId: string;
   gender: string;
 };
 

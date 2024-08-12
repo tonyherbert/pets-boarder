@@ -1,17 +1,17 @@
-export type Weight = {
-    value: number;
-    unit: string;
-    date: string;
-};
+import { Timestamp } from "firebase/firestore";
 
-export type WeightFromFirestore = {
-    createdAt: string;
+export type Weight = {
+    createdAt: Date;
     id: string;
     ownerId: string;
     petId: string;
-    weight: number;
+    weight: string;
     unit: string;
-    date: string;
+    date: Date;
+};
+
+export type WeightFromFirestore = {
+ 
 };
 
 export interface WeightChart {
