@@ -24,7 +24,6 @@ export default function WeightTabContent({
   weights,
   error,
 }: WeightTabContentProps) {
-  // Handle loading or error states if needed
   if (error) {
     return <div>Error loading weights...</div>;
   }

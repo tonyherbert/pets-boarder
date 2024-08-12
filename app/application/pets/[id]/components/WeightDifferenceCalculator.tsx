@@ -10,11 +10,13 @@ import useWeightStore from '@/stores/weight-store';
 import {
   calculatePercentageDifferenceBetweenDates,
   formatDate,
+  normalizeDate,
 } from '@/utils/convert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Weight } from '@/types/Weight';
+import moment from 'moment';
 
 interface FormValues {
   startDate: string;
@@ -28,6 +30,8 @@ interface WeightDifferenceCalculatorProps {
 const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
   weights,
 }) => {
+  console.log('weights', weights);
+
   const [percentageDifference, setPercentageDifference] = useState<
     number | undefined
   >(undefined);
@@ -43,18 +47,22 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
   useEffect(() => {
     if (weights.length > 0) {
       const uniqueDates = Array.from(
-        new Set(weights.map((weight) => formatDate(weight.date, 'yyyy-MM-dd')))
+        new Set(weights.map((weight) => formatDate(weight.date, 'dd/MM/yyyy')))
       );
+
       setDates(uniqueDates);
     }
   }, [weights]);
 
   const onSubmit = (data: FormValues) => {
     try {
+      const startDate = normalizeDate(data.startDate);
+      const endDate = normalizeDate(data.endDate);
+
       const result = calculatePercentageDifferenceBetweenDates(
         weights,
-        new Date(formatDate(data.startDate, 'yyyy-MM-dd:hh:mm:ss')),
-        new Date(formatDate(data.endDate, 'yyyy-MM-dd:hh:mm:ss')),
+        startDate,
+        endDate,
         'date',
         'weight'
       );

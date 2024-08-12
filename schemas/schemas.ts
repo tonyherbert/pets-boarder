@@ -17,7 +17,7 @@ export const petSchema = z.object({
   // ownerId sera ajouté automatiquement et ne fait pas partie du formulaire
 });
 
-export const weightSchema = z.object({
+export const weightInputSchema = z.object({
    date: z.date().or(z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
   }).transform(val => new Date(val))),

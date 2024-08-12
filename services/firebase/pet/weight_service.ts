@@ -27,7 +27,7 @@ export async function getWeightsByPetFromFirebase(
   );
   const querySnapshot = await getDocs(q);
 
-  const weights: z.infer<typeof weightSchema>[] = [];
+  const weights: Weight[] = [];
   querySnapshot.forEach((doc) => {
     weights.push({ id: doc.id, ...doc.data() } as any );
   });

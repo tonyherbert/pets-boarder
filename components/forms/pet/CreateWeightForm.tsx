@@ -1,6 +1,5 @@
 import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { useMainStore } from '@/stores/main-store';
 import useWeightStore from '@/stores/weight-store';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,11 +24,9 @@ import { Calendar } from '@/components/ui/calendar';
 import { format, isToday } from 'date-fns';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { weightSchema } from '@/schemas/schemas';
+import { weightInputSchema } from '@/schemas/schemas';
 import { createWeightAction } from '@/app/application/pets/[id]/weight.action';
 import { useRouter } from 'next/navigation';
-
-type WeightForm = z.infer<typeof weightSchema>;
 
 interface CreateWeightFormProps {
   petId: string;
@@ -40,7 +37,6 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
   petId,
   loading,
 }) => {
-  const { actions } = useWeightStore();
   const router = useRouter();
   const {
     register,
@@ -48,8 +44,8 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<z.infer<typeof weightSchema>>({
-    resolver: zodResolver(weightSchema),
+  } = useForm<z.infer<typeof weightInputSchema>>({
+    resolver: zodResolver(weightInputSchema),
     mode: 'onSubmit',
     defaultValues: {
       date: undefined,
@@ -59,7 +55,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
   });
 
   setValue('petId', petId);
-  const onSubmit: SubmitHandler<z.infer<typeof weightSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof weightInputSchema>> = async (
     data
   ) => {
     const [result, error] = await createWeightAction({

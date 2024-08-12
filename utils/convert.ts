@@ -120,6 +120,7 @@ export function calculatePercentageDifferenceBetweenDates<T>(
   valueProperty: keyof T
 ): { startDate: Date; endDate: Date; percentageDifference: number } | undefined {
   if (items.length === 0) return;
+console.log('stzrt', startDate);
 
   // Trouver les objets correspondant aux dates de début et de fin
   const startItem = items.find(item => (item[dateProperty] as unknown as Date).getTime() === startDate.getTime());
@@ -186,27 +187,33 @@ export function convertTimestampsToDates<T extends TimestampConvertible>(
   items: T[],
   timestampFields: (keyof T)[]
 ): T[] {
-  return items.map((item) => {
-    try {
-      // Création d'un nouvel objet avec les champs convertis
-      const convertedItem = { ...item } as T;
+  return items
+    .map((item) => {
+      try {
+        // Création d'un nouvel objet avec les champs convertis
+        const convertedItem = { ...item } as T;
 
-      // Parcours des champs spécifiés pour conversion
-      timestampFields.forEach((field) => {
-        const value = convertedItem[field];
-        if (isTimestamp(value)) {
-          // On est sûr que value est un Timestamp ici
-          const date = value.toDate();
-          // Réinitialiser l'heure à minuit
-          date.setUTCHours(0, 0, 0, 0);
-          convertedItem[field] = date as T[keyof T];
-        }
-      });
+        // Parcours des champs spécifiés pour conversion
+        timestampFields.forEach((field) => {
+          const value = convertedItem[field];
+          if (isTimestamp(value)) {
+            // On est sûr que value est un Timestamp ici
+            const date = moment(value.toDate()).startOf('day').toDate();
+            convertedItem[field] = date as T[keyof T];
+          }
+        });
 
-      return convertedItem;
-    } catch (error) {
-      console.error('Conversion failed for item:', item, error);
-      return null; // Renvoi de null en cas d'erreur
-    }
-  }).filter((item): item is T => item !== null);
+        return convertedItem;
+      } catch (error) {
+        console.error('Conversion failed for item:', item, error);
+        return null; // Renvoi de null en cas d'erreur
+      }
+    })
+    .filter((item): item is T => item !== null); // Filtrer les éléments null
 }
+
+
+// Utilisez cette fonction pour normaliser la date à minuit et ignorer l'heure
+export const normalizeDate = (date: string) => {
+  return moment(date, 'DD/MM/YYYY').startOf('day').toDate();
+};

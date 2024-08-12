@@ -1,11 +1,13 @@
+import { Timestamp } from "firebase/firestore";
+
 export type Weight = {
-    createdAt: string;
+    createdAt: Date;
     id: string;
     ownerId: string;
     petId: string;
     weight: string;
     unit: string;
-    date: date;
+    date: Date;
 };
 
 export type WeightFromFirestore = {
