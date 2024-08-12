@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import useWeightStore from '@/stores/weight-store';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -21,12 +20,13 @@ import {
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
-import { format, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { weightInputSchema } from '@/schemas/schemas';
 import { createWeightAction } from '@/app/application/pets/[id]/weight.action';
 import { useRouter } from 'next/navigation';
+import { isWeightDateAlreadyUsedInWeights } from '@/utils/dateUtils';
 
 interface CreateWeightFormProps {
   petId: string;
@@ -44,20 +44,39 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
     handleSubmit,
     formState: { errors },
     setValue,
+    setError,
+    clearErrors,
+    reset,
   } = useForm<z.infer<typeof weightInputSchema>>({
     resolver: zodResolver(weightInputSchema),
     mode: 'onSubmit',
     defaultValues: {
       date: undefined,
       unit: 'kgs',
-      weight: '0',
+      weight: '',
     },
   });
 
   setValue('petId', petId);
+
   const onSubmit: SubmitHandler<z.infer<typeof weightInputSchema>> = async (
     data
   ) => {
+    const dateExists = await isWeightDateAlreadyUsedInWeights(
+      petId,
+      new Date(data.date)
+    );
+
+    if (dateExists) {
+      setError('date', {
+        type: 'manual',
+        message: 'A weight entry for this date already exists.',
+      });
+      return;
+    }
+
+    clearErrors('date');
+
     const [result, error] = await createWeightAction({
       petId: petId,
       weight: data.weight,
@@ -69,6 +88,11 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
       console.error('Failed to create weight:', error);
     } else {
       console.log('Weight created successfully with ID:', result);
+      reset({
+        date: undefined,
+        unit: 'kgs',
+        weight: null,
+      });
     }
     router.refresh();
   };
@@ -174,7 +198,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
       </div>
 
       <div className="flex flex-col justify-center w-full mt-4">
-        <Button type="submit" className="btn-primary">
+        <Button type="submit" className="btn-primary" disabled={loading}>
           Add
         </Button>
       </div>
