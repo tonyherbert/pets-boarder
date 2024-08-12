@@ -27,7 +27,7 @@ import {
 import { calculatePercentageDifference, formatDate } from '@/utils/convert';
 
 interface LineChartProps {
-  data: any;
+  data: Weight[];
   loading?: boolean;
 }
 
@@ -52,6 +52,11 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
   a ${progressWeight.percentageDifference.toFixed(2)}% ${progressWeight.percentageDifference > 0 ? 'increase' : 'decrease'}.
   `
     : 'No weight data available to calculate progress.';
+
+  const formattedData = data.map((item) => ({
+    ...item,
+    date: formatDate(item.date, 'dd/MM/yyyy'),
+  }));
   return (
     <Card>
       <CardHeader>
@@ -63,7 +68,7 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height={300}>
               <RechartsLineChart
-                data={data}
+                data={formattedData}
                 margin={{
                   top: 20,
                   right: 20,
