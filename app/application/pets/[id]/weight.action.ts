@@ -26,8 +26,8 @@ export const getWeightsAction = action.input(petIdSchema).handler(async ({ input
     const userId = await getAuthenticatedUserId();
     const resultFromDb = await getWeightsByPetFromFirebase(userId, input.petId);
 
-    const formattedWeights = convertTimestampsToDates(resultFromDb, ['date']);
-    const sortedWeights = sortByDate(formattedWeights, "date");
+    const formattedWeights = convertTimestampsToDates(resultFromDb, ['date', 'createdAt']);
+    const sortedWeights = sortByDate(formattedWeights, "date",);
     return sortedWeights;
   } catch (error) {
     console.error("Error fetching weights:", error);
