@@ -2,8 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import Cookies from 'js-cookie';
-import { auth } from '@/services/auth/auth_service';
-
+import { auth } from '@/services/firebase/auth/auth_service';
 interface UserContextType {
   userId: string | null;
   setUserId: (id: string | null) => void;
