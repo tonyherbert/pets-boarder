@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-export const petIdSchema = z.object({
+export const inputGetWeightSchema = z.object({
+  userId: z.string().min(1, 'User ID is required'),
   petId: z.string().min(1, 'Pet ID is required'), 
 });
 
-export const petSchema = z.object({
+export const inputPetSchema = z.object({
   animalType: z.string(),       // Type d'animal, par exemple "dog"
   birthDate: z.date().or(z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
@@ -17,11 +18,15 @@ export const petSchema = z.object({
   // ownerId sera ajouté automatiquement et ne fait pas partie du formulaire
 });
 
-export const weightInputSchema = z.object({
+export const inputWeightSchema = z.object({
    date: z.date().or(z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
   }).transform(val => new Date(val))),
    petId: z.string(),
    unit: z.string(),
    weight: z.string(),
+});
+
+export const userIdSchema = z.object({
+    userId: z.string().min(1, 'User ID is required'),
 });

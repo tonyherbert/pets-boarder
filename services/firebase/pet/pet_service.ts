@@ -11,7 +11,7 @@ import {
   getDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { Pet, PetForm } from "@/types/Pets";
+import { Pet } from "@/types/Pets";
 
 
 
@@ -50,7 +50,7 @@ export async function getPetById(id: string, userId: string): Promise<Pet | unde
   return { id: petSnapshot.id, ...petData } as Pet;
 }
 
-export async function updatePet(id: string, userId: string, petDetails: PetForm) {
+export async function updatePet(id: string, userId: string, petDetails: any) {
   const petDocRef = doc(db, "pets", id);
 
   // Vérifiez que l'animal appartient bien à l'utilisateur

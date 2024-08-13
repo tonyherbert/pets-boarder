@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useMainStore } from '@/stores/main-store';
@@ -25,7 +26,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { createPet } from '@/app/application/pets/pets.actions';
 import { useRouter } from 'next/navigation';
-import { petSchema } from '@/schemas/schemas';
+import { inputPetSchema } from '@/schemas/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -38,8 +39,8 @@ const CreatePetForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof petSchema>>({
-    resolver: zodResolver(petSchema),
+  } = useForm<z.infer<typeof inputPetSchema>>({
+    resolver: zodResolver(inputPetSchema),
     defaultValues: {
       gender: 'Male',
       birthDate: undefined,
@@ -51,7 +52,9 @@ const CreatePetForm: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof petSchema>> = async (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof inputPetSchema>> = async (
+    data
+  ) => {
     const [result, error] = await createPet({
       name: data.name,
       chipNumber: data.chipNumber,

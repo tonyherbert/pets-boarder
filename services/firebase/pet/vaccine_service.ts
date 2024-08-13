@@ -3,21 +3,15 @@ import { db } from "@/firebase/firebase";
 import {
   doc,
   collection,
-  setDoc,
   addDoc,
   query,
   getDocs,
   where,
-  orderBy,
-  getDoc,
   updateDoc,
   deleteDoc,
-  Timestamp,
   DocumentData,
   DocumentReference,
 } from "firebase/firestore";
-import { Pet, PetForm } from "@/types/Pets";
-import { getCurrentUserId } from "@/services/user/user_service";
 import {vaccinesList} from '../../../data/vaccines-list'
 import { VaccineFromFirestore, VaccineList } from "@/types/Vaccines";
 

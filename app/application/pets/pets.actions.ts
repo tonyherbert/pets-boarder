@@ -1,17 +1,14 @@
 "use server";
 
-import { z } from "zod";
 import { action } from "@/utils/zsa";
-import { fetchTokens } from "@/utils/tokens";
 import { createPetInFirebase, getPetsFromFirebase } from "@/services/firebase/pet/pet_service";
-import { Pet } from "@/types/Pets";
-import { petSchema } from "@/schemas/schemas";
+import { inputPetSchema, userIdSchema } from "@/schemas/schemas";
 import { convertTimestampsToDates } from "@/utils/convert";
 import { getAuthenticatedUserId } from "@/utils/auth";
 
 
 
-export const createPet = action.input(petSchema).handler(async ({ input }) => {
+export const createPet = action.input(inputPetSchema).handler(async ({ input }) => {
   try {
       const userId = await getAuthenticatedUserId();
       const petId = await createPetInFirebase(userId, {
@@ -25,21 +22,15 @@ export const createPet = action.input(petSchema).handler(async ({ input }) => {
   }
 });
 
-const extendedPetSchema = petSchema.extend({
-  id: z.string(),          
-  ownerId: z.string(),
-});
 
-
-export const getPetsAction = action.handler(async () => {
+export const getPetsAction = action.input(userIdSchema).handler(async ({input}) => {
   try {
-       const userId = await getAuthenticatedUserId();
-       const resultFromDb = await getPetsFromFirebase(userId);
-       const formattedPets = convertTimestampsToDates(resultFromDb, ['birthDate']);
+    const resultFromDb = await getPetsFromFirebase( input.userId);
+    const formattedPets = convertTimestampsToDates(resultFromDb, ['birthDate']);
   
     return formattedPets;
   } catch (error) {
-    console.error("Error fetching weights:", error);
+    console.error("Error fetching pets:", error);
     return [];
   }
 });

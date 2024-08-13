@@ -87,7 +87,7 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
-          <Label htmlFor="start-date" className="mb-1">
+          <Label id="start-date-label" htmlFor="start-date" className="mb-1">
             Start date{' '}
           </Label>
           <Controller
@@ -95,7 +95,7 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
             control={control}
             render={({ field }) => (
               <Select
-                id="start-date"
+                aria-labelledby="start-date-label"
                 value={field.value}
                 onValueChange={field.onChange}
               >
@@ -114,7 +114,7 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
           />
         </div>
         <div className="flex flex-col">
-          <Label htmlFor="end-date" className="mb-1">
+          <Label id="end-date-label" htmlFor="end-date" className="mb-1">
             End date{' '}
           </Label>
           <Controller
@@ -122,10 +122,9 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
             control={control}
             render={({ field }) => (
               <Select
-                id="end-date"
+                aria-labelledby="end-date-label"
                 value={field.value}
                 onValueChange={field.onChange}
-                className="mt-1 block w-full border-input rounded-md shadow-sm"
               >
                 <SelectTrigger className="w-full bg-background">
                   <span>{field.value || 'Select date'}</span>

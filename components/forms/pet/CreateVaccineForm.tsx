@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import styles from "./CreateWeightForm.module.scss";
-import { getCurrentUserId } from "@/services/user/user_service";
-import { useMainStore } from "@/stores/main-store";
-import usePetStore from "@/stores/pet-store";
-import Button from "@/components/button/Button";
-import { IoMdAddCircle } from "react-icons/io";
-import { addWeightAndUpdateStore } from "@/dataManager/weightDataManager";
-import { addPetVaccine, getVaccinesList } from "@/services/firebase/pet/vaccine_service";
-import { addMonthsToDate } from "@/utils/convert";
-import { addVaccinesAndUpdateStore } from "@/dataManager/vaccineDataManager";
+import React, { useState, useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import styles from './CreateWeightForm.module.scss';
+import { getCurrentUserId } from '@/services/user/user_service';
+import { useMainStore } from '@/stores/main-store';
+import usePetStore from '@/stores/pet-store';
+import Button from '@/components/button/Button';
+import { IoMdAddCircle } from 'react-icons/io';
+import { getVaccinesList } from '@/services/firebase/pet/vaccine_service';
+import { addMonthsToDate } from '@/utils/convert';
+import { addVaccinesAndUpdateStore } from '@/dataManager/vaccineDataManager';
 
 interface CreateVaccineFormProps {
   petId: string;
@@ -23,7 +22,7 @@ interface Vaccine {
 
 const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
   const [vaccines, setVaccines] = useState<Vaccine[]>([]);
-  
+
   const [selectedVaccine, setSelectedVaccine] = useState<Vaccine | null>(null);
   const { closeModal } = useMainStore().actions;
   const { actions, loading, error } = usePetStore();
@@ -40,7 +39,7 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
         const fetchedVaccines = await getVaccinesList();
         setVaccines(fetchedVaccines);
       } catch (error) {
-        console.error("Erreur lors de la récupération des vaccins :", error);
+        console.error('Erreur lors de la récupération des vaccins :', error);
       }
     };
 
@@ -49,14 +48,18 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     const userId = getCurrentUserId();
-    data = {... data, reminder: addMonthsToDate(data.date,data.reminder), name: selectedVaccine!.name};
-        
- await addVaccinesAndUpdateStore(petId, data);
+    data = {
+      ...data,
+      reminder: addMonthsToDate(data.date, data.reminder),
+      name: selectedVaccine!.name,
+    };
+
+    await addVaccinesAndUpdateStore(petId, data);
     closeModal();
   };
 
   const selectedVaccineHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const vaccine = vaccines.find(v => v.id === e.target.value) || null;
+    const vaccine = vaccines.find((v) => v.id === e.target.value) || null;
     setSelectedVaccine(vaccine);
   };
 
@@ -68,11 +71,13 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
           <label htmlFor="vaccine">Vaccine</label>
           <select
             id="vaccine"
-            {...register("vaccine")}
+            {...register('vaccine')}
             onChange={selectedVaccineHandler}
-            value={selectedVaccine?.name || ""}
+            value={selectedVaccine?.name || ''}
           >
-            <option value="" disabled>Select a vaccine</option>
+            <option value="" disabled>
+              Select a vaccine
+            </option>
             {vaccines.map((vaccine) => (
               <option key={vaccine.id} value={vaccine.id}>
                 {vaccine.name}
@@ -83,10 +88,7 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
         {selectedVaccine && (
           <div className={styles.formGroup}>
             <label htmlFor="reminder">Reminder</label>
-            <select
-              id="reminder"
-              {...register("reminder")}
-            >
+            <select id="reminder" {...register('reminder')}>
               {selectedVaccine.reminder.map((reminder) => (
                 <option key={reminder} value={reminder}>
                   {reminder} months
@@ -100,7 +102,7 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
           <input
             type="date"
             id="registerAt"
-            {...register("registerAt", { required: true })}
+            {...register('registerAt', { required: true })}
           />
           {errors.date && <span>This field is required</span>}
         </div>

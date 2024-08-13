@@ -1,13 +1,19 @@
+import { Pet } from '@/types/Pets';
 import { getPetsAction } from './pets.actions';
 import PetsClientComponent from './PetsClientComponent';
+import { fetchTokens } from '@/utils/tokens';
 
-export default async function Page() {
-  const [pets, error] = await getPetsAction();
+async function fetchPets(): Promise<Pet[]> {
+  const { userId } = await fetchTokens();
+  const [pets, error] = await getPetsAction({ userId });
 
   if (error) {
-    console.error('Error fetching pets:', error);
-    return <div>Error loading pets</div>;
+    throw new Error('Erreur lors de la récupération des animaux');
   }
+  return pets;
+}
+export default async function Page() {
+  const pets = await fetchPets();
 
   return <PetsClientComponent initialPets={pets} />;
 }

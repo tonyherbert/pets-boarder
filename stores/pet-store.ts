@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { Pet, PetForm } from '@/types/Pets';
+import { Pet } from '@/types/Pets';
 import { endpoints, methods } from '@/config/api-config';
 
 interface PetStoreState {
@@ -11,7 +11,7 @@ interface PetStoreState {
     setPets: (pets: Pet[]) => void;
     setSelectedPet: (pet: Pet) => void;
     fetchPets: () => Promise<void>;
-    createPet: (data: PetForm) => Promise<void>;
+    createPet: (data: any) => Promise<void>;
   };
 }
 
@@ -45,7 +45,7 @@ const usePetStore = create<PetStoreState>((set, get) => ({
         set({ loading: false });
       }
     },
-    createPet: async (data: PetForm) => {
+    createPet: async (data: any) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(endpoints.pets.create, {
