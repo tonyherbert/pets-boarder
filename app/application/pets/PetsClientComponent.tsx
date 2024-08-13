@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Pet } from '@/types/Pets';
-import Button from '@/components/button/Button';
 import CreatePetForm from '@/components/forms/pet/CreatePetForm';
 import './page.scss';
 import { useMainStore } from '@/stores/main-store';
 import loadable from '@loadable/component';
+import { Button } from '@/components/ui/button';
 
 const HoverEffect = loadable(() => import('@/components/ui/card-hover-effect'), {
   fallback: <div>Loading...</div>, 

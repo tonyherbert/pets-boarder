@@ -6,7 +6,7 @@ import { Weight } from '@/types/Weight';
 
 // Chargement dynamique des composants avec loadable
 const WeightTable = loadable(() => import('../../tables/WeightTable'));
-const LineChartComponent = loadable(() => import('@/components/lineChart/LineChart'));
+const LineChartComponent = loadable(() => import('@/views/weightChart/ViewChart'));
 const WeightDifferenceCalculator = loadable(() => import('../../WeightDifferenceCalculator'));
 const CreateWeightForm = loadable(() => import('@/components/forms/pet/CreateWeightForm'));
 const MenuWeight = loadable(() => import('../../menu/MenuWeight'));
@@ -14,7 +14,7 @@ const MenuWeight = loadable(() => import('../../menu/MenuWeight'));
 interface WeightTabContentProps {
   petId: string;
   weights: Weight[];
-       error: any;
+  error: any;
 } 
 const WeightTabContent = ({
   petId,
@@ -61,7 +61,7 @@ const WeightTabContent = ({
           </CardHeader>
           <CardContent className="space-y-2 h-96">
             <Suspense fallback={<div>Loading form...</div>}>
-              <CreateWeightForm petId={''} loading={false} />
+              <CreateWeightForm petId={petId} loading={false} />
             </Suspense>
           </CardContent>
         </Card>

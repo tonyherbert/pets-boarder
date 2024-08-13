@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Weight, WeightChart, WeightFromFirestore } from '@/types/Weight';
+import { Weight } from '@/types/Weight';
 import { TrendingDown, TrendingUp } from 'lucide-react';
 import {
   CardTitle,
@@ -17,14 +17,14 @@ import {
   CardHeader,
   CardContent,
   CardFooter,
-} from '../ui/card';
+} from '../../components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
-} from '../ui/chart';
+} from '../../components/ui/chart';
 import { calculatePercentageDifference, formatDate } from '@/utils/convert';
+import { SettingsPopover } from './SettingsModal';
 
 interface LineChartProps {
   data: Weight[];
@@ -39,10 +39,33 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
+  const [yDomain, setYDomain] = useState<[number, number]>([0, 100]);
+  const [lineColor, setLineColor] = useState<string>('hsl(var(--chart-1))');
+  const [showPoints, setShowPoints] = useState<boolean>(false);
+
+  useEffect(() => {
+    const preferences = localStorage.getItem('chartPreferences');
+    if (preferences) {
+      const parsedPreferences = JSON.parse(preferences);
+      if (parsedPreferences.yDomain) {
+        setYDomain(parsedPreferences.yDomain);
+      }
+      if (parsedPreferences.lineColor) {
+        console.log("test");
+        
+        setLineColor(parsedPreferences.lineColor);
+      }
+      if (parsedPreferences.showPoints !== undefined) {
+        setShowPoints(parsedPreferences.showPoints);
+      }
+    }
+  }, []);
+
   const formatTooltip = (value: number, name: string, props: any) => {
     const unit = props.payload.unit;
     return [`${value} ${unit}`];
   };
+
   const progressWeight = calculatePercentageDifference(data, 'date', 'weight');
 
   const textResultProgressWeight = progressWeight
@@ -57,11 +80,19 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
     ...item,
     date: formatDate(item.date, 'dd/MM/yyyy'),
   }));
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{'Weight trend graph'}</CardTitle>
-        <CardDescription>Monitoring</CardDescription>
+      <CardHeader className="flex justify-between items-center">
+        <SettingsPopover 
+          setYDomain={setYDomain} 
+          setLineColor={setLineColor} 
+          setShowPoints={setShowPoints} 
+        />
+        <div>
+          <CardTitle>{'Weight trend graph'}</CardTitle>
+          <CardDescription>Monitoring</CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         {data && data.length > 0 ? (
@@ -86,8 +117,8 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
                   width={35}
+                  domain={yDomain}
                 />
                 <Tooltip
                   formatter={formatTooltip}
@@ -96,9 +127,9 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data, loading }) => {
                 <Line
                   type="monotone"
                   dataKey="weight"
-                  stroke="hsl(var(--chart-1))"
+                  stroke={lineColor}
                   strokeWidth={2}
-                  dot={false}
+                  dot={showPoints}
                 />
               </RechartsLineChart>
             </ResponsiveContainer>
