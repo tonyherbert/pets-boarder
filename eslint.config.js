@@ -40,4 +40,9 @@ export default {
             version: 'detect',
         },
     },
+    overrides: {
+        eslint: "^9",
+        glob: "^10"
+
+    }
 };

@@ -6,14 +6,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 
-// Composant HoverEffect qui attend un tableau de Pet
-export const HoverEffect = ({
-  pets,
-  className,
-}: {
+interface CardHoverEffectProps {
   pets: Pet[];
   className?: string;
-}) => {
+}
+ const HoverEffect: React.FC<CardHoverEffectProps> = ({ pets, className }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
@@ -71,19 +68,16 @@ export const HoverEffect = ({
           </div>
         ))
       ) : (
-        <p>No pets found</p>
+        <p className="text-center col-span-full">No pets found</p>
       )}
     </div>
   );
 };
 
 // Composant Card utilisé dans HoverEffect
-export const Card = ({
+export const Card: React.FC<{ className?: string; children: React.ReactNode }> = ({
   className,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
 }) => {
   return (
     <div
@@ -100,24 +94,18 @@ export const Card = ({
 };
 
 // Autres composants utilisés dans HoverEffect
-export const CardHeader = ({
+export const CardHeader: React.FC<{ className?: string; children: React.ReactNode }> = ({
   className,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
 }) => {
   return (
     <div className={cn('text-zinc-100 space-y-2', className)}>{children}</div>
   );
 };
 
-export const CardDescription = ({
+export const CardDescription: React.FC<{ className?: string; children: React.ReactNode }> = ({
   className,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
 }) => (
   <div
     className={cn(
@@ -129,7 +117,7 @@ export const CardDescription = ({
   </div>
 );
 
-export const CardFooter = ({ petId }: { petId: string }) => (
+export const CardFooter: React.FC<{ petId: string }> = ({ petId }) => (
   <div className="flex justify-center mt-4">
     <Link href={`pets/${petId}`} className="custom-button">
       More Details
@@ -137,9 +125,14 @@ export const CardFooter = ({ petId }: { petId: string }) => (
   </div>
 );
 
-const DetailItem = ({ label, value }: { label: string; value: string }) => (
+const DetailItem: React.FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => (
   <div className="flex flex-col items-center text-sm font-extralight mb-2">
     <span>{label}</span>
     <span className="font-semibold mt-1">{value}</span>
   </div>
 );
+
+export default HoverEffect;

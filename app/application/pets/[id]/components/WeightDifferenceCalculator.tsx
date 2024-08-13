@@ -30,7 +30,6 @@ interface WeightDifferenceCalculatorProps {
 const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
   weights,
 }) => {
-  console.log('weights', weights);
 
   const [percentageDifference, setPercentageDifference] = useState<
     number | undefined

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -11,54 +12,13 @@ import {
 import { Weight } from '@/types/Weight';
 import { formatDate } from '@/utils/convert';
 
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV007',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card',
-  },
-];
+// Define the props interface
+interface WeightTableProps {
+  data: Weight[];
+}
 
-export function WeightTable({ data }: { data: Weight[] }) {
-  console.log(data);
-
+// Define the component as a React.FC with the defined props
+const WeightTable: React.FC<WeightTableProps> = ({ data }) => {
   return (
     <Table>
       <TableHeader>
@@ -69,11 +29,11 @@ export function WeightTable({ data }: { data: Weight[] }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((data, index) => (
-          <TableRow key={index + Math.random()}>
-            <TableCell className="font-medium">{data.weight}</TableCell>
-            <TableCell>{data.unit}</TableCell>
-            <TableCell>{formatDate(data.date)}</TableCell>
+        {data.map((weight, index) => (
+          <TableRow key={index}>
+            <TableCell className="font-medium">{weight.weight}</TableCell>
+            <TableCell>{weight.unit}</TableCell>
+            <TableCell>{formatDate(weight.date)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -85,4 +45,6 @@ export function WeightTable({ data }: { data: Weight[] }) {
       </TableFooter>
     </Table>
   );
-}
+};
+
+export default WeightTable;

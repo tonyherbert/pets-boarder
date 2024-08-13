@@ -13,7 +13,8 @@ interface MenuWeightProps {
   onMenuItemClick: (item: string) => void;
 }
 
-export function MenuWeight({ onMenuItemClick }: MenuWeightProps) {
+// Define the component as a React.FC with the defined props
+const MenuWeight: React.FC<MenuWeightProps> = ({ onMenuItemClick }) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('Table');
 
   const handleMenuItemClick = (item: string) => {
@@ -52,4 +53,6 @@ export function MenuWeight({ onMenuItemClick }: MenuWeightProps) {
       </Menubar>
     </div>
   );
-}
+};
+
+export default MenuWeight;

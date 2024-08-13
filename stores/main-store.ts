@@ -1,11 +1,11 @@
+import { ReactElement } from "react";
 import { create } from "zustand";
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 interface ModalState {
-  modal?: ReactJSXElement;
+  modal?: ReactElement;
   actions: {
     closeModal: () => void;
-    openModal: (modalComponent: ReactJSXElement) => void;
+    openModal: (modalComponent: ReactElement) => void;
   };
 }
 
@@ -14,7 +14,7 @@ export const useMainStore = create<ModalState>((set) => ({
     closeModal: () => {
       set({ modal: undefined });
     },
-    openModal: (modalComponent: ReactJSXElement) => {
+    openModal: (modalComponent: ReactElement) => {
       set({ modal: modalComponent });
     },
   },

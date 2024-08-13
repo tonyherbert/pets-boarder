@@ -6,6 +6,8 @@ const nextTranslate = require("next-translate");
 const plausiblePlugin = withPlausibleProxy;
 const bundleAnalyzer = withBundleAnalyzer({
     enabled: process.env.ANALYZE === "true",
+    openAnalyzer: true,
+
 });
 
 const nextConfig = {
@@ -14,6 +16,9 @@ const nextConfig = {
     images: {
         formats: ["image/avif", "image/webp"],
         domains: ["***"],
+    },
+    experimental: {
+        optimizePackageImports: ["tailwindcss-animate", "framer-motion"],
     },
 };
 
