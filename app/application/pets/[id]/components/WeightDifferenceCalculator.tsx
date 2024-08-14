@@ -79,7 +79,7 @@ const WeightDifferenceCalculator: React.FC<WeightDifferenceCalculatorProps> = ({
 
   return (
     <form
-      className="flex flex-col gap-4 p-6 max-w-md mx-auto bg-card rounded-lg shadow-lg"
+      className="p-6 max-w-lg mx-auto bg-card rounded-lg shadow-lg"
       onSubmit={handleSubmit(onSubmit)}
     >
       <Label className="mb-1">Calculate Percentage </Label>

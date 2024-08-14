@@ -157,6 +157,9 @@ console.log(petId);
       </div>
 
       <div className="flex flex-col flex-grow w-full">
+         <Label htmlFor="date" className="mb-1">
+            Date
+          </Label>
         <Controller
           name="date"
           control={control}

@@ -33,28 +33,29 @@ const WeightTabContent = ({
         <MenuWeight onMenuItemClick={handleMenuItemClick} />
       </Suspense>
 
-      <div className="w-screen mx-auto p-4 max-w-7xl h-full gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <div className="w-screen mx-auto p-4 max-w-7xl h-full gap-4 grid grid-cols-1 md:grid-cols-3 ">
         {selectedMenu === 'Table' && (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3">
+          <div className="col-span-1 md:col-span-2">
             <Suspense fallback={<div>Loading table...</div>}>
               <WeightTable data={weights} />
             </Suspense>
           </div>
         )}
         {selectedMenu === 'Trend graph' && (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3">
+          <div className="col-span-1 md:col-span-2">
             <Suspense fallback={<div>Loading graph...</div>}>
               <LineChartComponent data={weights} loading={false} />
             </Suspense>
           </div>
         )}
         {selectedMenu === 'Increase calculator' && (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3">
+          <div className="col-span-3">
             <Suspense fallback={<div>Loading calculator...</div>}>
               <WeightDifferenceCalculator weights={weights} />
             </Suspense>
           </div>
         )}
+         {selectedMenu !== 'Increase calculator' && 
         <Card className="col-span-1 bg-card max-w-full h-full">
           <CardHeader>
             <CardTitle>Add new weight</CardTitle>
@@ -65,6 +66,7 @@ const WeightTabContent = ({
             </Suspense>
           </CardContent>
         </Card>
+}
       </div>
     </div>
   );
