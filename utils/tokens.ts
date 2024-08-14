@@ -11,5 +11,5 @@ export async function fetchTokens() {
     serviceAccount: serverConfig.serviceAccount,
   });
   
-  return {userId: tokens?.decodedToken?.uid, tokens} ;
+  return {userId: tokens!.decodedToken?.uid, tokens} ;
 }

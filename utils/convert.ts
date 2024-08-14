@@ -95,8 +95,8 @@ export function calculatePercentageDifference<T>(
   const percentageDifference = (valueDifference / valueOldest) * 100;
 
   return {
-    oldestDate: oldestDate.toString(),
-    mostRecentDate: mostRecentDate.toString(),
+    oldestDate: oldestDate!.toString(),
+    mostRecentDate: mostRecentDate!.toString(),
     percentageDifference
   };
 }

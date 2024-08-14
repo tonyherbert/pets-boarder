@@ -1,6 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "@loadable/component"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -34,11 +43,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "scripts/dog_script.ts",
-    "scripts/dog_script.cjs",
+    "scripts/**/*.{ts,cjs}",
     "types"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "out"
   ]
 }

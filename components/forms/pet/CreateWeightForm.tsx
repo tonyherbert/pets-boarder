@@ -23,7 +23,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { weightInputSchema } from '@/schemas/schemas';
+import { inputWeightSchema } from '@/schemas/schemas';
 import { createWeightAction } from '@/app/application/pets/[id]/weight.action';
 import { useRouter } from 'next/navigation';
 import { isWeightDateAlreadyUsedInWeights } from '@/utils/dateUtils';
@@ -47,8 +47,8 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
     setError,
     clearErrors,
     reset,
-  } = useForm<z.infer<typeof weightInputSchema>>({
-    resolver: zodResolver(weightInputSchema),
+  } = useForm<z.infer<typeof inputWeightSchema>>({
+    resolver: zodResolver(inputWeightSchema),
     mode: 'onSubmit',
     defaultValues: {
       date: undefined,
@@ -59,7 +59,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
 
   setValue('petId', petId);
 
-  const onSubmit: SubmitHandler<z.infer<typeof weightInputSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof inputWeightSchema>> = async (
     data
   ) => {
     const dateExists = await isWeightDateAlreadyUsedInWeights(
@@ -76,6 +76,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
     }
 
     clearErrors('date');
+console.log(petId);
 
     const [result, error] = await createWeightAction({
       petId: petId,
@@ -91,7 +92,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
       reset({
         date: undefined,
         unit: 'kgs',
-        weight: null,
+        weight: '',
       });
     }
     router.refresh();
@@ -99,7 +100,7 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
 
   return (
     <form
-      className="flex flex-col gap-4 w-full p-6 max-w-md mx-auto bg-card rounded-lg shadow-lg"
+      className="flex flex-col gap-4 w-full p-6 max-w-md mx-auto bg-card rounded-lg "
       onSubmit={handleSubmit(onSubmit)}
     >
       <Label className="mb-1">Add new weight</Label>
@@ -156,6 +157,9 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
       </div>
 
       <div className="flex flex-col flex-grow w-full">
+         <Label htmlFor="date" className="mb-1">
+            Date
+          </Label>
         <Controller
           name="date"
           control={control}
