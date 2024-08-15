@@ -4,11 +4,11 @@ import PetsClientComponent from './PetsClientComponent';
 import { fetchTokens } from '@/utils/tokens';
 
 async function fetchPets(): Promise<Pet[]> {
-  const { userId } = await fetchTokens();
-  const [pets, error] = await getPetsAction({ userId });
-
+  const [pets, error] = await getPetsAction();
+ 
   if (error) {
-    throw new Error('Erreur lors de la récupération des animaux');
+    console.error('Error fetching pets:', error);
+    return [];
   }
   return pets;
 }

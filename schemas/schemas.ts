@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const inputGetWeightSchema = z.object({
-  userId: z.string().min(1, 'User ID is required'),
   petId: z.string().min(1, 'Pet ID is required'), 
 });
 
@@ -15,7 +14,6 @@ export const inputPetSchema = z.object({
   gender: z.string(),      // Genre de l'animal
   lof: z.string(),              // Numéro LOF, par exemple "LOF-431 567 9875"
   name: z.string(),             // Nom de l'animal
-  // ownerId sera ajouté automatiquement et ne fait pas partie du formulaire
 });
 
 export const inputWeightSchema = z.object({

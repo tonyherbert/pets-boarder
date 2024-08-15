@@ -4,11 +4,11 @@ import styles from './CreateWeightForm.module.scss';
 import { getCurrentUserId } from '@/services/user/user_service';
 import { useMainStore } from '@/stores/main-store';
 import usePetStore from '@/stores/pet-store';
-import Button from '@/components/button/Button';
 import { IoMdAddCircle } from 'react-icons/io';
 import { getVaccinesList } from '@/services/firebase/pet/vaccine_service';
 import { addMonthsToDate } from '@/utils/convert';
 import { addVaccinesAndUpdateStore } from '@/dataManager/vaccineDataManager';
+import { Button } from '@/components/ui/button';
 
 interface CreateVaccineFormProps {
   petId: string;
@@ -106,7 +106,7 @@ const CreateVaccineForm: React.FC<CreateVaccineFormProps> = ({ petId }) => {
           />
           {errors.date && <span>This field is required</span>}
         </div>
-        <Button icon={<IoMdAddCircle />}>Add Vaccine</Button>
+        <Button>Add Vaccine</Button>
       </form>
     </>
   );

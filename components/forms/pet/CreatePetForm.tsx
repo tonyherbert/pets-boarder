@@ -3,34 +3,23 @@ import React from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useMainStore } from '@/stores/main-store';
 import usePetStore from '@/stores/pet-store';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-} from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { createPet } from '@/app/application/pets/pets.actions';
+import {  createPetAction } from '@/app/application/pets/pets.actions';
 import { useRouter } from 'next/navigation';
 import { inputPetSchema } from '@/schemas/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useServerActionMutation } from "@/lib/zsa.query";
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 
-const CreatePetForm: React.FC = () => {
+const CreatePetForm: React.FC =  () => {
   const { closeModal } = useMainStore().actions;
   const { actions } = usePetStore();
   const router = useRouter();
@@ -51,28 +40,19 @@ const CreatePetForm: React.FC = () => {
       name: '',
     },
   });
-
+ const {isPending, mutate} = useServerActionMutation(createPetAction,{
+  onSuccess: () => {
+    closeModal();
+    router.refresh();
+  },
+  onError: (error) => {
+    console.error('Error creating pet:', error);   
+ } });
+  
   const onSubmit: SubmitHandler<z.infer<typeof inputPetSchema>> = async (
     data
   ) => {
-    const [result, error] = await createPet({
-      name: data.name,
-      chipNumber: data.chipNumber,
-      lof: data.lof,
-      animalType: data.animalType,
-      breed: data.breed,
-      birthDate: data.birthDate,
-      gender: data.gender,
-    });
-
-    if (error) {
-      console.error('Error creating pet:', error);
-      return;
-    }
-
-    console.log('Pet created successfully:', result);
-    router.refresh();
-    closeModal();
+    mutate({...data});
   };
 
   return (
@@ -81,7 +61,6 @@ const CreatePetForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Label className="mb-1">Add a new pet</Label>
-
       <div className="flex flex-col gap-4">
         <div className="flex flex-col/2 md:flex-row gap-4">
           <div className="flex flex-col">
@@ -249,6 +228,7 @@ const CreatePetForm: React.FC = () => {
       <div className="flex flex-col justify-center w-full mt-4">
         <Button type="submit" className="btn-primary">
           Create Pet
+          {isPending && <Loader2 className="animate-spin ml-2" />}
         </Button>
       </div>
     </form>

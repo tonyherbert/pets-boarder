@@ -76,8 +76,6 @@ const CreateWeightForm: React.FC<CreateWeightFormProps> = ({
     }
 
     clearErrors('date');
-console.log(petId);
-
     const [result, error] = await createWeightAction({
       petId: petId,
       weight: data.weight,

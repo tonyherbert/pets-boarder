@@ -4,7 +4,6 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useMainStore } from "@/stores/main-store";
 import { IoIosCloseCircle } from "react-icons/io";
 import "./GenericModal.scss";
-import Button from "../button/Button";
 
 interface ModalProps {
   children: ReactNode;
