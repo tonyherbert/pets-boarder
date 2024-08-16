@@ -48,8 +48,6 @@ export const deletePetAction = authedAction
 
 export const getPetsAction = authedAction.handler(async ({ ctx }) => {
     try {
-        console.log('ctx', ctx)
-
         const userId = ctx
         if (!userId) {
             throw new Error('No user ID found in context.')

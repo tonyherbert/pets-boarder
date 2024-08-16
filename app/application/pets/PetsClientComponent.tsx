@@ -6,6 +6,9 @@ import './page.scss'
 import { useMainStore } from '@/stores/main-store'
 import loadable from '@loadable/component'
 import { Button } from '@/components/ui/button'
+import { useServerAction } from 'zsa-react'
+import { getPetsAction } from './pets.actions'
+import { useServerActionMutation } from '@/lib/zsa.query'
 
 const HoverEffect = loadable(
     () => import('@/components/ui/card-hover-effect'),
@@ -24,6 +27,9 @@ const PetsClientComponent: React.FC<PetsClientComponentProps> = ({
     const [pets, setPets] = useState<Pet[]>([])
 
     const { openModal } = useMainStore().actions
+
+    const { data } = useServerActionMutation(getPetsAction)
+    console.log('/////////', data)
 
     useEffect(() => {
         if (initialPets) {

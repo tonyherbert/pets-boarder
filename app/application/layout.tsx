@@ -18,6 +18,8 @@ const GenericModal = dynamic(() => import('@/components/modal/GenericModal'), {
     ssr: false,
 })
 
+export const fetchCache = 'default-cache'
+
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
     const { modal } = useMainStore()
 
